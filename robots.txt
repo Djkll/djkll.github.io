@@ -2,6 +2,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://blog.juanertu.com/sitemap.xml
-Sitemap: https://blog.juanertu.com/baidusitemap.xml
+Sitemap: https://djkll.github.io/sitemap.xml
+Sitemap: https://djkll.github.io/baidusitemap.xml
 
