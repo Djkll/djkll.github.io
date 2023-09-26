@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>git的基本使用 | Hungs の blog</title><meta name="author" content="hungs"><meta name="copyright" content="hungs"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Git版本控制什么是版本控制？版本控制（Revision control）是一种在开发的过程中用于管理我们对文件、目录或工程等内容的修改历史，方便查看更改历史记录，备份以便恢复以前的版本的软件工程技术。  实现跨区域多人协同开发 追踪和记载一个或者多个文件的历史记录 组织和保护你的源代码和文档 统计工作量 并行开发、提高开发效率 跟踪记录整个软件的开发过程 减轻开发人员的负担，节省时间，同时降低人">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git的基本使用">
+<meta property="og:url" content="https://hungslab.github.io/posts/73d8.html">
+<meta property="og:site_name" content="Hungs の blog">
+<meta property="og:description" content="Git版本控制什么是版本控制？版本控制（Revision control）是一种在开发的过程中用于管理我们对文件、目录或工程等内容的修改历史，方便查看更改历史记录，备份以便恢复以前的版本的软件工程技术。  实现跨区域多人协同开发 追踪和记载一个或者多个文件的历史记录 组织和保护你的源代码和文档 统计工作量 并行开发、提高开发效率 跟踪记录整个软件的开发过程 减轻开发人员的负担，节省时间，同时降低人">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2023/08/04/AYf4wS8CRU31MGZ.jpg">
+<meta property="article:published_time" content="2023-09-12T00:53:37.000Z">
+<meta property="article:modified_time" content="2023-09-26T02:05:43.501Z">
+<meta property="article:author" content="hungs">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/08/04/AYf4wS8CRU31MGZ.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://hungslab.github.io/posts/73d8.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="8-R8ai-C9Vq5keW_bcZ4dzYeQUPjrY1-3L2eE-ihohY"/><meta name="baidu-site-verification" content="code-3VKfAyLlIC"/><meta name="msvalidate.01" content="6B61F2B4D54E644405AE2167A82F77FC"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/fancybox/3.5.7/jquery.fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"Author: hungs","link":"Link: ","source":"Source: Hungs の blog","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source."}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'git的基本使用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-26 10:05:43'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/js/runtime/runtime.js"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://www.fomal.cc/static/css/runtime.min.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/08/04/AYf4wS8CRU31MGZ.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hungs の blog"><span class="site-name">Hungs の blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">git的基本使用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-09-12T00:53:37.000Z" title="Created 2023-09-12 08:53:37">2023-09-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-09-26T02:05:43.501Z" title="Updated 2023-09-26 10:05:43">2023-09-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>10min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="git的基本使用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h2><h3 id="什么是版本控制？"><a href="#什么是版本控制？" class="headerlink" title="什么是版本控制？"></a>什么是版本控制？</h3><p>版本控制（Revision control）是一种在开发的过程中用于管理我们对文件、目录或工程等内容的修改历史，方便查看更改历史记录，备份以便恢复以前的版本的软件工程技术。</p>
+<ul>
+<li>实现跨区域多人协同开发</li>
+<li>追踪和记载一个或者多个文件的历史记录</li>
+<li>组织和保护你的源代码和文档</li>
+<li>统计工作量</li>
+<li>并行开发、提高开发效率</li>
+<li>跟踪记录整个软件的开发过程</li>
+<li>减轻开发人员的负担，节省时间，同时降低人为错误</li>
+</ul>
+<p>简单说就是用于管理多人协同开发项目的技术。</p>
+<p>没有进行版本控制或者版本控制本身缺乏正确的流程管理，在软件开发过程中将会引入很多问题，如软件代码的一致性、软件内容的冗余、软件过程的事物性、软件开发过程中的并发性、软件源代码的安全性，以及软件的整合等问题。</p>
+<p>无论是工作还是学习，或者是自己做笔记，都经历过这样一个阶段！我们就迫切需要一个版本控制工具！</p>
+<h3 id="版本控制分类"><a href="#版本控制分类" class="headerlink" title="版本控制分类"></a>版本控制分类</h3><p><strong>分布式版本控制 Git</strong></p>
+<p>每个人都拥有全部的代码！安全隐患！</p>
+<p>所有版本信息仓库全部同步到本地的每个用户，这样就可以在本地查看所有版本历史，可以离线在本地提交，只需在连网时push到相应的服务器或其他用户那里。由于每个用户那里保存的都是所有的版本数据，只要有一个用户的设备没有问题就可以恢复所有的数据，但这增加了本地存储空间的占用。</p>
+<p>不会因为服务器损坏或者网络问题，造成不能工作的情况！</p>
+<h2 id="启动Git"><a href="#启动Git" class="headerlink" title="启动Git"></a>启动Git</h2><p>安装成功后在开始菜单中会有Git项，菜单下有3个程序：任意文件夹下右键也可以看到对应的程序！</p>
+<p><strong>Git Bash</strong>：Unix与Linux风格的命令行，使用最多，推荐最多</p>
+<p><strong>Git CMD</strong>：Windows风格的命令行</p>
+<p><strong>Git GUI</strong>：图形界面的Git，不建议初学者使用，尽量先熟悉常用命令</p>
+<h3 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h3><p>所有的配置文件，其实都保存在本地！</p>
+<p>查看不同级别的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看系统config</span></span><br><span class="line">git config --system --list</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看当前用户（global）配置</span></span><br><span class="line">git config --global  --list</span><br><span class="line"><span class="comment">## 基本设置</span></span><br></pre></td></tr></table></figure>
+<p><strong>配置用户信息</strong> 此节设置用户名与邮箱（用户标识，必要）。 当你安装Git后首先要做的事情是设置你的用户名称和e-mail地址。这是非常重要的，因为每次Git提交都会使用该信息。它被永远的嵌入到了你的提交中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;hungs&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;hungs@acbug.cn&quot;</span></span><br></pre></td></tr></table></figure>
+<p>只需要做一次这个设置，如果你传递了—global 选项，因为Git将总是会使用该信息来处理你在系统中所做的一切操作。如果你希望在一个特定的项目中使用不同的名称或e-mail地址，你可以在该项目中运行该命令而不要—global选项。总之—global为全局配置，不加为某个项目的特定配置。</p>
+<h3 id="4个区域"><a href="#4个区域" class="headerlink" title="4个区域 #"></a>4个区域 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://wiki.wgpsec.org/knowledge/base/git-base.html#_4个区域">#</a></h3><p>Git本地有4个工作区域：</p>
+<ul>
+<li>Workspace：工作区，就是你平时存放项目代码的地方</li>
+<li>Index / Stage：暂存区，用于临时存放你的改动，事实上它只是一个文件，保存即将提交到文件列表信息</li>
+<li>Repository：仓库区（或本地仓库）**，就是安全存放数据的位置，这里面有你提交到所有版本的数据。其中HEAD指向最新放入仓库的版本</li>
+<li>Remote：远程仓库，托管代码的服务器**，可以简单的认为是你项目组中的一台电脑用于远程数据交换</li>
+</ul>
+<p><img src="https://wiki.wgpsec.org/images/git-base/Transformational-Relation.jpg" alt="img"></p>
+<ul>
+<li>Directory：使用Git管理的一个目录，也就是一个仓库，包含我们的工作空间和Git的管理空间。</li>
+<li>WorkSpace：需要通过Git进行版本控制的目录和文件，这些目录和文件组成了工作空间。</li>
+<li>.git：存放Git管理信息的目录，初始化仓库的时候自动创建。</li>
+<li>Index/Stage：暂存区，或者叫待提交更新区，在提交进入repo之前，我们可以把所有的更新放在暂存区。</li>
+<li>Local Repo：本地仓库，一个存放在本地的版本库；HEAD会只是当前的开发分支（branch）。</li>
+<li>Stash：隐藏，是一个工作状态保存栈，用于保存/恢复WorkSpace中的临时状态。</li>
+</ul>
+<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><p>git的工作流程一般是这样的： １、在工作目录中添加、修改文件； ２、将需要进行版本管理的文件放入暂存区域； ３、将暂存区域的文件提交到git仓库。</p>
+<p>因此，git管理的文件有三种状态： 已修改（modified）, 已暂存（staged）, 已提交(committed)</p>
+<h3 id="工作目录"><a href="#工作目录" class="headerlink" title="工作目录"></a>工作目录</h3><p>工作目录（WorkSpace)一般就是你希望Git帮助你管理的文件夹，可以是你项目的目录，也可以是一个空目录，建议不要有中文。</p>
+<h2 id="本地仓库搭建"><a href="#本地仓库搭建" class="headerlink" title="本地仓库搭建"></a>本地仓库搭建</h2><p>接下来，创建仓库。创建本地仓库的方法有两种：一种是创建全新的仓库，另一种是克隆远程仓库。</p>
+<h3 id="初始化版本控制"><a href="#初始化版本控制" class="headerlink" title="初始化版本控制"></a>初始化版本控制</h3><p>创建全新的仓库,需要用GIT管理的项目的根目录执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init <span class="comment">#每个项目只一次</span></span><br></pre></td></tr></table></figure>
+<p>执行后可以看到，仅仅在项目目录多出了一个.git目录，关于版本等的所有信息都在这个目录里面。</p>
+<h3 id="克隆远程仓库"><a href="#克隆远程仓库" class="headerlink" title="克隆远程仓库"></a>克隆远程仓库</h3><p>另一种方式是克隆远程目录，由于是将远程服务器上的仓库完全镜像一份至本地！</p>
+<blockquote>
+<p>克隆一个项目和它的整个代码历史(版本信息)</p>
+<p>$ git clone <a target="_blank" rel="noopener external nofollow noreferrer" href="https://gitee.com/kuangstudy/openclass.git">https://gitee.com/kuangstudy/openclass.git</a></p>
+</blockquote>
+<h2 id="Git文件操作"><a href="#Git文件操作" class="headerlink" title="Git文件操作"></a>Git文件操作</h2><h3 id="文件的四种状态"><a href="#文件的四种状态" class="headerlink" title="文件的四种状态"></a>文件的四种状态</h3><p>版本控制就是对文件的版本控制，要对文件进行修改、提交等操作，首先要知道文件当前在什么状态，不然可能会提交了现在还不想提交的文件，或者要提交的文件没提交上。</p>
+<ul>
+<li><strong>Untracked</strong>: 未跟踪, 此文件在文件夹中, 但并没有加入到git库, 不参与版本控制. 通过git add 状态变为Staged.</li>
+<li><strong>Unmodify</strong>: 文件已经入库, 未修改, 即版本库中的文件快照内容与文件夹中完全一致. 这种类型的文件有两种去处, 如果它被修改, 而变为Modified. 如果使用git rm移出版本库, 则成为Untracked文件</li>
+<li><strong>Modified</strong>: 文件已修改, 仅仅是修改, 并没有进行其他的操作. 这个文件也有两个去处, 通过git add可进入暂存staged状态, 使用git checkout 则丢弃修改过, 返回到unmodify状态, 这个git checkout即从库中取出文件, 覆盖当前修改 !</li>
+<li><strong>Staged</strong>: 暂存状态. 执行git commit则将修改同步到库中, 这时库中的文件和本地文件又变为一致, 文件为Unmodify状态. 执行git reset HEAD filename取消暂存, 文件状态为Modified</li>
+</ul>
+<h3 id="文件状态"><a href="#文件状态" class="headerlink" title="文件状态"></a>文件状态</h3><p>上面说文件有4种状态，通过如下命令可以查看到文件的状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- [file]	<span class="comment">#将Modified的文件回滚至Unmodify的状态。</span></span><br><span class="line"><span class="comment">#例如：</span></span><br><span class="line">git checkout -- ReadMe.md</span><br></pre></td></tr></table></figure>
+<p><strong>添加文件追踪</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .   <span class="comment">#此命令为添加所有文件到暂存区.或者也可以更新提交的时候写单个文件或目录名。</span></span><br></pre></td></tr></table></figure>
+<p><strong>提交文件 （-m 后表示说明内容，需要加引号）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git commit -m “这里是说明消息”    <span class="comment"># 提交暂存区中的内容到本地仓库 -m 提交信息</span></span><br><span class="line"><span class="comment"># Aborting commit:按住shift，同时敲击2下z键.Aborting commit会导致Commit失败。</span></span><br></pre></td></tr></table></figure>
+<p>若git push 报错Everything up to date, 检查是不是忘记git commit -m 了。 <strong>查看当前修改状态</strong></p>
+<p>常在执行 add 后，执行 commit 之前使用，也可以在 commit之后使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看指定文件状态</span></span><br><span class="line">git status [filename]</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看所有文件状态</span></span><br><span class="line">git status</span><br></pre></td></tr></table></figure>
+<p><strong>其它常用参数</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#以下命令，在.git根目录工作区使用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看历史记录</span></span><br><span class="line">git <span class="built_in">log</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#对比两次提交的不同</span></span><br><span class="line">git diff commit_id	</span><br><span class="line">git diff HEAD^</span><br><span class="line"></span><br><span class="line"><span class="comment">#切换到历史版本</span></span><br><span class="line">git reset commit_id</span><br><span class="line">git reset --hard HEAD^</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看stash列表，保存到git栈的git 工作状态</span></span><br><span class="line">git stash list</span><br><span class="line">git stash pop	<span class="comment">#从git栈中弹出内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#git stash list看不到的话</span></span><br><span class="line"><span class="built_in">cat</span> .git/refs/stash		<span class="comment">#会有一个hash</span></span><br><span class="line">git diff <span class="built_in">hash</span>值		<span class="comment">#即可看到内容差异</span></span><br></pre></td></tr></table></figure>
+<h3 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h3><p>有些时候我们不想把某些文件纳入版本控制中，比如数据库文件，临时文件，设计文件等</p>
+<p>在主目录下建立”.gitignore”文件，此文件有如下规则：</p>
+<ul>
+<li>忽略文件中的空行或以井号（#）开始的行将会被忽略。</li>
+<li>可以使用Linux通配符。例如：星号（*）代表任意多个字符，问号（？）代表一个字符，方括号（[abc]）代表可选字符范围，大括号（{string1,string2,…}）代表可选的字符串等。</li>
+<li>如果名称的最前面有一个感叹号（!），表示例外规则，将不被忽略。</li>
+<li>如果名称的最前面是一个路径分隔符（/），表示要忽略的文件在此目录下，而子目录中的文件不忽略。</li>
+<li>如果名称的最后面是一个路径分隔符（/），表示要忽略的是此目录下该名称的子目录，而非文件（默认文件或目录都忽略）。</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#为注释</span><br><span class="line">*.txt        #忽略所有 .txt结尾的文件,这样的话上传就不会被选中！</span><br><span class="line">!lib.txt     #但lib.txt除外</span><br><span class="line">/temp        #仅忽略项目根目录下的TODO文件,不包括其它目录temp。/ 在前面代表忽略上面。</span><br><span class="line">build/       #忽略build/目录下的所有文件。 / 在后面代表忽略下面。</span><br><span class="line">doc/*.txt    #会忽略 doc/notes.txt 但不包括 doc/server/arch.txt</span><br></pre></td></tr></table></figure>
+<h3 id="将远端文件下载到本地"><a href="#将远端文件下载到本地" class="headerlink" title="将远端文件下载到本地"></a>将远端文件下载到本地</h3><p>本地有仓库:pull即可 本地无仓库:用不了pull。应使用clone，将远端仓库直接clone来。</p>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><p><strong>1.登陆github账号</strong></p>
+<p><strong>2.创建 SSH Key</strong></p>
+<p>【C盘—-&gt;用户/user—-&gt;Administrator（自己的用户名）】</p>
+<p>看看有没有 .ssh 目录，如果有，再看看这个目录下有没有 id_rsa 和 id_rsa.pub</p>
+<p>如果已经有了，可直接跳到下一步。</p>
+<p>如果没有，打开 Shell（Windows下打开Git Bash），创建 SSH Key：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;xksec@foxmail.com&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>3.登陆 GitHub，打开 “Settings”</strong></p>
+<p>“SSH Keys” 页面，“New SSH key”，“粘贴公钥”</p>
+<p><strong>4.创建项目，并复制项目地址，添加远程仓库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/wintrysec/wintrysec.github.io.git</span><br></pre></td></tr></table></figure>
+<p><strong>5.把所有推送到远端仓库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<h3 id="将Workspace文件传送到Remote"><a href="#将Workspace文件传送到Remote" class="headerlink" title="将Workspace文件传送到Remote"></a>将Workspace文件传送到Remote</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#初始化</span></span><br><span class="line">git init</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建仓库。此步也可GUI完成。</span></span><br><span class="line">$ git remote add origin https://gitee.com/用户个性地址/HelloGitee.git</span><br><span class="line"></span><br><span class="line"><span class="comment">#在新建仓库时，如果在 Gitee 平台仓库上已经存在 readme 或其他文件，在提交时可能会存在冲突，这时用户需要选择的是保留线上的文件或者舍弃线上的文件，如果您舍弃线上的文件，则在推送时选择强制推送，-f代表force，强制推送需要执行下面的命令(默认不推荐该行为)：</span></span><br><span class="line">$ git push origin master -f</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果您选择保留线上的 readme 文件,则需要先执行：</span></span><br><span class="line">$ git pull origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#若出现以下报错</span></span><br><span class="line">error: src refspec master does not match any</span><br><span class="line"></span><br><span class="line"><span class="comment">#请使用</span></span><br><span class="line">git status <span class="comment">#以检查文件状态是否都是commited</span></span><br></pre></td></tr></table></figure>
+<h2 id="更新远程仓库"><a href="#更新远程仓库" class="headerlink" title="更新远程仓库"></a>更新远程仓库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git pull	<span class="comment">#拉取更新，每次必做防止团队合作干掉别人上传的代码</span></span><br><span class="line">git add .   <span class="comment">#更新文件后添加追踪</span></span><br><span class="line">git commit -m “这里是说明消息”</span><br><span class="line">git status	<span class="comment">#查看当前修改状态</span></span><br><span class="line">git branch	<span class="comment">#查看当前分支</span></span><br><span class="line">git push	<span class="comment">#推送向远程仓库</span></span><br></pre></td></tr></table></figure>
+<p><strong>分支管理</strong> <strong>分支在GIT中相对较难，分支就是科幻电影里面的平行宇宙，</strong>如果两个平行宇宙互不干扰，那对现在的你也没啥影响。不过，在某个时间点，两个平行宇宙合并了，我们就需要处理一些问题了！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git branch			<span class="comment">#查看当前所有本地分支</span></span><br><span class="line">git branch -r        <span class="comment"># 列出所有远程分支。-r代表remote。</span></span><br><span class="line">git branch -a       <span class="comment">#列出所有分支，包含本地和remote，-a代表all </span></span><br><span class="line">git branch -d [branch-name]    <span class="comment"># 删除分支</span></span><br><span class="line">git branch [branch-name]    <span class="comment"># 新建一个分支，但依然停留在当前分支</span></span><br><span class="line"></span><br><span class="line">git chechout aaa 	<span class="comment">#切换分支aaa</span></span><br><span class="line">git chechout -b aaa <span class="comment">#本地创建 aaa分支，同时切换到aaa分支</span></span><br><span class="line"><span class="comment">#只有提交的时候才会在服务端上创建一个分支</span></span><br><span class="line"></span><br><span class="line">git merge [branch]    <span class="comment"># 合并指定分支到当前分支</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除远程分支</span></span><br><span class="line">git push origin --delete [branch-name]</span><br><span class="line">git branch -dr [remote/branch]</span><br></pre></td></tr></table></figure>
+<p>如果同一个文件在合并分支时都被修改了则会引起冲突：解决的办法是我们可以修改冲突文件后重新提交！选择要保留他的代码还是你的代码！</p>
+<p>master主分支应该非常稳定，用来发布新版本，一般情况下不允许在上面工作，工作一般情况下在新建的dev分支上工作，工作完后，比如上要发布，或者说dev分支代码稳定后可以合并到主分支master上来。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://hungslab.github.io">hungs</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://hungslab.github.io/posts/73d8.html">https://hungslab.github.io/posts/73d8.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/08/04/AYf4wS8CRU31MGZ.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://lib.baomitu.com/social-share.js/1.0.16/css/share.min.css" media="print" onload="this.media='all'"><script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/d364.html" title="xxe漏洞学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">xxe漏洞学习</div></div></a></div><div class="next-post pull-right"><a href="/posts/659.html" title="Moectf 2023 Re-Writeup"><img class="cover" src="https://byxs20-picture-for-typora.oss-cn-hangzhou.aliyuncs.com/img_for_typora/cover/cover_18.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Moectf 2023 Re-Writeup</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/08/04/AYf4wS8CRU31MGZ.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">hungs</div><div class="author-info__description">Talk is cheap. Show me the code.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/hunngslab"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/hungslab" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:hongbozhao72@gmail.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1092134168&amp;site=qq&amp;menu=yes" rel="external nofollow noreferrer" target="_blank" title="QQ"><i class="fa-brands fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome to my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Git"><span class="toc-number">1.</span> <span class="toc-text">Git</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%EF%BC%9F"><span class="toc-number">1.1.1.</span> <span class="toc-text">什么是版本控制？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">版本控制分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8Git"><span class="toc-number">1.2.</span> <span class="toc-text">启动Git</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.1.</span> <span class="toc-text">Git配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E4%B8%AA%E5%8C%BA%E5%9F%9F"><span class="toc-number">1.2.2.</span> <span class="toc-text">4个区域 </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">工作流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="toc-number">1.2.4.</span> <span class="toc-text">工作目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E6%90%AD%E5%BB%BA"><span class="toc-number">1.3.</span> <span class="toc-text">本地仓库搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.1.</span> <span class="toc-text">初始化版本控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">1.3.2.</span> <span class="toc-text">克隆远程仓库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">1.4.</span> <span class="toc-text">Git文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E5%9B%9B%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="toc-number">1.4.1.</span> <span class="toc-text">文件的四种状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="toc-number">1.4.2.</span> <span class="toc-text">文件状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.3.</span> <span class="toc-text">忽略文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E8%BF%9C%E7%AB%AF%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="toc-number">1.4.4.</span> <span class="toc-text">将远端文件下载到本地</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">1.5.</span> <span class="toc-text">远程仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86Workspace%E6%96%87%E4%BB%B6%E4%BC%A0%E9%80%81%E5%88%B0Remote"><span class="toc-number">1.5.1.</span> <span class="toc-text">将Workspace文件传送到Remote</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">1.6.</span> <span class="toc-text">更新远程仓库</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/659.html" title="Moectf 2023 Re-Writeup"><img src="https://byxs20-picture-for-typora.oss-cn-hangzhou.aliyuncs.com/img_for_typora/cover/cover_18.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Moectf 2023 Re-Writeup"/></a><div class="content"><a class="title" href="/posts/659.html" title="Moectf 2023 Re-Writeup">Moectf 2023 Re-Writeup</a><time datetime="2023-09-26T02:04:26.382Z" title="Created 2023-09-26 10:04:26">2023-09-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/73d8.html" title="git的基本使用">git的基本使用</a><time datetime="2023-09-12T00:53:37.000Z" title="Created 2023-09-12 08:53:37">2023-09-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d364.html" title="xxe漏洞学习">xxe漏洞学习</a><time datetime="2023-09-12T00:51:10.000Z" title="Created 2023-09-12 08:51:10">2023-09-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/f978.html" title="数字图像 小计"><img src="https://lnng.top/images/pasted-110.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数字图像 小计"/></a><div class="content"><a class="title" href="/posts/f978.html" title="数字图像 小计">数字图像 小计</a><time datetime="2023-09-11T12:17:00.000Z" title="Created 2023-09-11 20:17:00">2023-09-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/af46.html" title="Install-IIS-Tomcat"><img src="https://lnng.top/images/pasted-110.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Install-IIS-Tomcat"/></a><div class="content"><a class="title" href="/posts/af46.html" title="Install-IIS-Tomcat">Install-IIS-Tomcat</a><time datetime="2023-09-10T12:17:00.000Z" title="Created 2023-09-10 20:17:00">2023-09-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By hungs</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/fancybox/3.5.7/jquery.fancybox.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="博客框架为Hexo_v5.4.0" title=""><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="主题版本Butterfly_v4.2.2" title=""><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://www.jsdelivr.com/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="本站使用JsDelivr为静态资源提供CDN加速" title=""><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&amp;logo=jsDelivr" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="/js/runtime/runtime.js"></script><!-- hexo injector body_end end --></body></html>
